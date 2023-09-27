@@ -1,13 +1,14 @@
 package com.runapp.profileservice.controller;
 
-import com.runapp.profileservice.dto.request.DeleteStorageRequest;
-import com.runapp.profileservice.dto.request.UserDeleteRequest;
-import com.runapp.profileservice.dto.request.UserRequest;
+import com.runapp.profileservice.dto.request.*;
 import com.runapp.profileservice.dto.response.DeleteResponse;
 import com.runapp.profileservice.dto.response.UserResponse;
 import com.runapp.profileservice.dto.userDtoMapper.UserDtoMapper;
 import com.runapp.profileservice.feignClient.StorageServiceClient;
+import com.runapp.profileservice.model.DistanceGoalModel;
+import com.runapp.profileservice.model.DurationGoalModel;
 import com.runapp.profileservice.model.UserModel;
+import com.runapp.profileservice.model.WeightGoalModel;
 import com.runapp.profileservice.service.UserService;
 import feign.FeignException;
 import jakarta.validation.Valid;
@@ -180,5 +181,48 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new DeleteResponse("the image does not exist or the data was transferred incorrectly"));
         }
     }
+
+    @PostMapping("/distance-goals")
+    @Operation(summary = "Add a distance goal to a user", description = "Add a distance goal to a user by their ID")
+    @ApiResponse(responseCode = "201", description = "Distance goal added", content = @Content(schema = @Schema(implementation = DistanceGoalModel.class)))
+    @ApiResponse(responseCode = "404", description = "User not found")
+    public ResponseEntity<DistanceGoalModel> addDistanceGoalToUser(
+            @RequestBody @Valid CreateDistanceGoalRequest createDistanceGoalRequest) {
+        DistanceGoalModel distanceGoal = userService.addDistanceGoalToUser(createDistanceGoalRequest);
+        if (distanceGoal != null) {
+            return new ResponseEntity<>(distanceGoal, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/duration-goals")
+    @Operation(summary = "Add a duration goal to a user", description = "Add a duration goal to a user by their ID")
+    @ApiResponse(responseCode = "201", description = "Duration goal added", content = @Content(schema = @Schema(implementation = DurationGoalModel.class)))
+    @ApiResponse(responseCode = "404", description = "User not found")
+    public ResponseEntity<DurationGoalModel> addDurationGoalToUser(
+            @RequestBody @Valid CreateDurationGoalRequest createDurationGoalRequest) {
+        DurationGoalModel durationGoal = userService.addDurationGoalToUser(createDurationGoalRequest);
+        if (durationGoal != null) {
+            return new ResponseEntity<>(durationGoal, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/weight-goals")
+    @Operation(summary = "Add a weight goal to a user", description = "Add a weight goal to a user by their ID")
+    @ApiResponse(responseCode = "201", description = "Weight goal added", content = @Content(schema = @Schema(implementation = WeightGoalModel.class)))
+    @ApiResponse(responseCode = "404", description = "User not found")
+    public ResponseEntity<WeightGoalModel> addWeightGoalToUser(
+            @RequestBody @Valid CreateWeightGoalRequest createWeightGoalRequest) {
+        WeightGoalModel weightGoal = userService.addWeightGoalToUser(createWeightGoalRequest);
+        if (weightGoal != null) {
+            return new ResponseEntity<>(weightGoal, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
 

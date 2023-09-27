@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -38,4 +39,7 @@ public class UserModel {
 
     @Column(name = "user_image_url")
     private String userImageUrl;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<GoalModel> goalModelList;
 }
