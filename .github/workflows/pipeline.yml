@@ -21,7 +21,7 @@ jobs:
           java-version: '20'
 
       - name: Build with Maven
-        run: mvn -B clean install
+        run: mvn -B clean install -DskipTests
 
   Tests:
     runs-on: ubuntu-latest
