@@ -16,7 +16,7 @@ management:
     health:
       show-details: always
 springdoc:
-  packagesToScan: com.runapp.shoesservice
+  packagesToScan: com.runapp.profileservice
 
 eureka:
   client:
@@ -42,7 +42,7 @@ spring:
     hibernate:
       ddl-auto: create-drop
   application:
-    name: shoes-service
+    name: profile-service
   servlet:
     multipart:
       enabled: true
