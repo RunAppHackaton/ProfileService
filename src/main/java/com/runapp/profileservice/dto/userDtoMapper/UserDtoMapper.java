@@ -12,6 +12,7 @@ public class UserDtoMapper {
     public UserModel toModel(UserRequest userRequest) {
         UserModel userModel = new UserModel();
         userModel.setUsername(userRequest.getUsername());
+        userModel.setPassword(userRequest.getPassword());
         userModel.setFirstName(userModel.getFirstName());
         userModel.setLastName(userRequest.getLastName());
         userModel.setEmail(userRequest.getEmail());
@@ -25,6 +26,7 @@ public class UserDtoMapper {
         UserResponse userResponse = new UserResponse();
         userResponse.setId(userModel.getId());
         userResponse.setUsername(userModel.getUsername());
+        userResponse.setPassword(userModel.getPassword());
         userResponse.setFirstName(userModel.getFirstName());
         userResponse.setLastName(userModel.getLastName());
         userResponse.setRole(userModel.getRole());

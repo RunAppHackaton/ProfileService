@@ -45,11 +45,10 @@ public class UserController {
     @Value("${storage-directory}")
     private String storageDirectory;
 
-    @Autowired
-    private StorageServiceClient storageServiceClient;
+    private final StorageServiceClient storageServiceClient;
 
     @Autowired
-    public UserController(UserService userService, UserDtoMapper userDtoMapper) {
+    public UserController(UserService userService, UserDtoMapper userDtoMapper, StorageServiceClient storageServiceClient) {
         this.userService = userService;
         this.userDtoMapper = userDtoMapper;
         this.storageServiceClient = storageServiceClient;

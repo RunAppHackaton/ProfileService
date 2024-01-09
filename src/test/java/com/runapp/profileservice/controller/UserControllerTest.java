@@ -6,16 +6,18 @@ import com.runapp.profileservice.model.UserModel;
 import com.runapp.profileservice.service.UserService;
 import com.runapp.profileservice.dto.userDtoMapper.UserDtoMapper;
 import com.runapp.profileservice.feignClient.StorageServiceClient;
+import com.runapp.profileservice.utill.RoleEnum;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,9 +45,9 @@ class UserControllerTest {
     @Test
     void createUser_ValidUserRequest_ReturnsCreatedUserResponse() {
         // Arrange
-        UserRequest userRequest = new UserRequest();
-        UserModel userModel = new UserModel();
-        UserResponse userResponse = new UserResponse();
+        UserRequest userRequest = getTestUserRequest();
+        UserModel userModel = getTestUserModel();
+        UserResponse userResponse = getTestUserResponse();
         when(userDtoMapper.toModel(userRequest)).thenReturn(userModel);
         when(userService.createUser(userModel)).thenReturn(userModel);
         when(userDtoMapper.toResponse(userModel)).thenReturn(userResponse);
@@ -89,4 +91,14 @@ class UserControllerTest {
         assertNull(response.getBody());
     }
 
+
+    UserRequest getTestUserRequest(){
+        return new UserRequest("Jack", "password123", "Jackson", "Doe", "jackmail@gmail.com", LocalDateTime.of(2022, 1, 1, 12, 30), "something");
+    }
+    UserResponse getTestUserResponse(){
+        return new UserResponse(1, "Jack", "password123", "Jackson", "Doe", RoleEnum.USER,"jackmail@gmail.com", LocalDateTime.of(2022, 1, 1, 12, 30), "something");
+    }
+    UserModel getTestUserModel(){
+        return new UserModel(1, "Jack", "password123", "Jackson", "Doe", RoleEnum.USER, "jackmail@gmail.com", LocalDateTime.of(2022, 1, 1, 12, 30), "something", null);
+    }
 }
