@@ -6,7 +6,9 @@ import com.runapp.profileservice.dto.request.CreateWeightGoalRequest;
 import com.runapp.profileservice.model.*;
 import com.runapp.profileservice.repository.*;
 import com.runapp.profileservice.utill.GoalTypeEnum;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,17 +21,20 @@ public class UserService {
     private final DistanceGoalRepository distanceGoalRepository;
     private final DurationGoalRepository durationGoalRepository;
     private final WeightGoalRepository weightGoalRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, GoalRepository goalRepository, DistanceGoalRepository distanceGoalRepository, DurationGoalRepository durationGoalRepository, WeightGoalRepository weightGoalRepository) {
+    public UserService(UserRepository userRepository, GoalRepository goalRepository, DistanceGoalRepository distanceGoalRepository, DurationGoalRepository durationGoalRepository, WeightGoalRepository weightGoalRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.goalRepository = goalRepository;
         this.distanceGoalRepository = distanceGoalRepository;
         this.durationGoalRepository = durationGoalRepository;
         this.weightGoalRepository = weightGoalRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserModel createUser(UserModel user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -44,6 +49,9 @@ public class UserService {
     public UserModel updateUser(int userId, UserModel updatedUser) {
         if (userRepository.existsById(userId)) {
             updatedUser.setId(userId);
+            if(updatedUser.getPassword()!=null){
+                updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+            }
             return userRepository.save(updatedUser);
         } else {
             return null;

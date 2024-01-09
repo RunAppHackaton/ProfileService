@@ -20,6 +20,9 @@ public class UserRequest {
     @Length(min = 3, max = 15, message = "The 'username' length must be between 3 and 15 characters.")
     private String username;
 
+    @Length(min = 6, max = 32, message = "The 'password' length must be between 6 and 32 characters.")
+    private String password;
+
     @NotEmpty(message = "The 'firstName' field must not be empty.")
     @Length(min = 3, max = 15, message = "The 'firstName' length must be between 3 and 15 characters.")
     private String firstName;
