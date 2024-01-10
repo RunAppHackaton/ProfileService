@@ -1,1 +1,4 @@
-com/runapp/profileservice/controller/UserControllerTest.class
+com\runapp\profileservice\controller\UserControllerTest.class
+com\runapp\profileservice\dto\request\CreateDurationGoalRequestDiffblueTest.class
+com\runapp\profileservice\model\UserModelDiffblueTest.class
+com\runapp\profileservice\dto\response\DeleteResponseDiffblueTest.class

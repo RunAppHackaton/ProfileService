@@ -60,6 +60,7 @@ class UserRequestDiffblueTest {
         actualUserRequest.setLastName("Doe");
         actualUserRequest.setUserImageUrl("https://example.org/example");
         actualUserRequest.setUsername("janedoe");
+        actualUserRequest.setPassword("password");
         String actualToStringResult = actualUserRequest.toString();
         LocalDateTime actualCreateDate = actualUserRequest.getCreateDate();
         String actualEmail = actualUserRequest.getEmail();
@@ -68,7 +69,7 @@ class UserRequestDiffblueTest {
         String actualUserImageUrl = actualUserRequest.getUserImageUrl();
         assertEquals("Doe", actualLastName);
         assertEquals("Jane", actualFirstName);
-        assertEquals("UserRequest(username=janedoe, firstName=Jane, lastName=Doe, email=jane.doe@example.org, createDate"
+        assertEquals("UserRequest(username=janedoe, password=password, firstName=Jane, lastName=Doe, email=jane.doe@example.org, createDate"
                 + "=1970-01-01T00:00, userImageUrl=https://example.org/example)", actualToStringResult);
         assertEquals("https://example.org/example", actualUserImageUrl);
         assertEquals("jane.doe@example.org", actualEmail);
@@ -76,30 +77,10 @@ class UserRequestDiffblueTest {
         assertSame(createDate, actualCreateDate);
     }
 
-    /**
-     * Methods under test:
-     *
-     * <ul>
-     *   <li>
-     * {@link UserRequest#UserRequest(String, String, String, String, LocalDateTime, String)}
-     *   <li>{@link UserRequest#setCreateDate(LocalDateTime)}
-     *   <li>{@link UserRequest#setEmail(String)}
-     *   <li>{@link UserRequest#setFirstName(String)}
-     *   <li>{@link UserRequest#setLastName(String)}
-     *   <li>{@link UserRequest#setUserImageUrl(String)}
-     *   <li>{@link UserRequest#setUsername(String)}
-     *   <li>{@link UserRequest#toString()}
-     *   <li>{@link UserRequest#getCreateDate()}
-     *   <li>{@link UserRequest#getEmail()}
-     *   <li>{@link UserRequest#getFirstName()}
-     *   <li>{@link UserRequest#getLastName()}
-     *   <li>{@link UserRequest#getUserImageUrl()}
-     *   <li>{@link UserRequest#getUsername()}
-     * </ul>
-     */
+
     @Test
     void testConstructor2() {
-        UserRequest actualUserRequest = new UserRequest("janedoe", "Jane", "Doe", "jane.doe@example.org",
+        UserRequest actualUserRequest = new UserRequest("janedoe", "password", "Jane", "Doe", "jane.doe@example.org",
                 LocalDate.of(1970, 1, 1).atStartOfDay(), "https://example.org/example");
         LocalDateTime createDate = LocalDate.of(1970, 1, 1).atStartOfDay();
         actualUserRequest.setCreateDate(createDate);
@@ -108,6 +89,7 @@ class UserRequestDiffblueTest {
         actualUserRequest.setLastName("Doe");
         actualUserRequest.setUserImageUrl("https://example.org/example");
         actualUserRequest.setUsername("janedoe");
+        actualUserRequest.setPassword("password");
         String actualToStringResult = actualUserRequest.toString();
         LocalDateTime actualCreateDate = actualUserRequest.getCreateDate();
         String actualEmail = actualUserRequest.getEmail();
@@ -116,7 +98,7 @@ class UserRequestDiffblueTest {
         String actualUserImageUrl = actualUserRequest.getUserImageUrl();
         assertEquals("Doe", actualLastName);
         assertEquals("Jane", actualFirstName);
-        assertEquals("UserRequest(username=janedoe, firstName=Jane, lastName=Doe, email=jane.doe@example.org, createDate"
+        assertEquals("UserRequest(username=janedoe, password=password, firstName=Jane, lastName=Doe, email=jane.doe@example.org, createDate"
                 + "=1970-01-01T00:00, userImageUrl=https://example.org/example)", actualToStringResult);
         assertEquals("https://example.org/example", actualUserImageUrl);
         assertEquals("jane.doe@example.org", actualEmail);
@@ -171,7 +153,7 @@ class UserRequestDiffblueTest {
      */
     @Test
     void testEquals4() {
-        UserRequest userRequest = new UserRequest("janedoe", "Jane", "Doe", "jane.doe@example.org",
+        UserRequest userRequest = new UserRequest("janedoe","password", "Jane", "Doe", "jane.doe@example.org",
                 LocalDate.of(1970, 1, 1).atStartOfDay(), "https://example.org/example");
         assertNotEquals(userRequest, new UserRequest());
     }
@@ -182,7 +164,7 @@ class UserRequestDiffblueTest {
     @Test
     void testEquals5() {
         UserRequest userRequest = new UserRequest();
-        assertNotEquals(userRequest, new UserRequest("janedoe", "Jane", "Doe", "jane.doe@example.org",
+        assertNotEquals(userRequest, new UserRequest("janedoe","password", "Jane", "Doe", "jane.doe@example.org",
                 LocalDate.of(1970, 1, 1).atStartOfDay(), "https://example.org/example"));
     }
 
@@ -246,9 +228,9 @@ class UserRequestDiffblueTest {
      */
     @Test
     void testEquals11() {
-        UserRequest userRequest = new UserRequest("janedoe", "Jane", "Doe", "jane.doe@example.org",
+        UserRequest userRequest = new UserRequest("janedoe", "password","Jane", "Doe", "jane.doe@example.org",
                 LocalDate.of(1970, 1, 1).atStartOfDay(), "https://example.org/example");
-        UserRequest userRequest2 = new UserRequest("janedoe", "Jane", "Doe", "jane.doe@example.org",
+        UserRequest userRequest2 = new UserRequest("janedoe", "password","Jane", "Doe", "jane.doe@example.org",
                 LocalDate.of(1970, 1, 1).atStartOfDay(), "https://example.org/example");
 
         assertEquals(userRequest, userRequest2);

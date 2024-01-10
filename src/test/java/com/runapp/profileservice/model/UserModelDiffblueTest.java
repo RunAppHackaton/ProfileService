@@ -96,6 +96,7 @@ class UserModelDiffblueTest {
         actualUserModel.setRole(RoleEnum.GUEST);
         actualUserModel.setUserImageUrl("https://example.org/example");
         actualUserModel.setUsername("janedoe");
+        actualUserModel.setPassword("password");
         String actualToStringResult = actualUserModel.toString();
         LocalDateTime actualCreateDate = actualUserModel.getCreateDate();
         String actualEmail = actualUserModel.getEmail();
@@ -108,7 +109,7 @@ class UserModelDiffblueTest {
         assertEquals("Doe", actualLastName);
         assertEquals("Jane", actualFirstName);
         assertEquals(
-                "UserModel(id=1, username=janedoe, firstName=Jane, lastName=Doe, role=GUEST, email=jane.doe@example.org,"
+                "UserModel(id=1, username=janedoe, password=password, firstName=Jane, lastName=Doe, role=GUEST, email=jane.doe@example.org,"
                         + " createDate=1970-01-01T00:00, userImageUrl=https://example.org/example, goalModelList=[])",
                 actualToStringResult);
         assertEquals("https://example.org/example", actualUserImageUrl);
@@ -135,6 +136,7 @@ class UserModelDiffblueTest {
         userModel.setRole(RoleEnum.GUEST);
         userModel.setUserImageUrl("https://example.org/example");
         userModel.setUsername("janedoe");
+        userModel.setPassword("password");
         assertNotEquals(userModel, null);
     }
 
@@ -153,6 +155,7 @@ class UserModelDiffblueTest {
         userModel.setRole(RoleEnum.GUEST);
         userModel.setUserImageUrl("https://example.org/example");
         userModel.setUsername("janedoe");
+        userModel.setPassword("password");
         assertNotEquals(userModel, "Different type to UserModel");
     }
 
@@ -176,6 +179,7 @@ class UserModelDiffblueTest {
         userModel.setRole(RoleEnum.GUEST);
         userModel.setUserImageUrl("https://example.org/example");
         userModel.setUsername("janedoe");
+        userModel.setPassword("password");
         assertEquals(userModel, userModel);
         int expectedHashCodeResult = userModel.hashCode();
         assertEquals(expectedHashCodeResult, userModel.hashCode());
@@ -201,6 +205,7 @@ class UserModelDiffblueTest {
         userModel.setRole(RoleEnum.GUEST);
         userModel.setUserImageUrl("https://example.org/example");
         userModel.setUsername("janedoe");
+        userModel.setPassword("password");
 
         UserModel userModel2 = new UserModel();
         userModel2.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
@@ -212,6 +217,7 @@ class UserModelDiffblueTest {
         userModel2.setRole(RoleEnum.GUEST);
         userModel2.setUserImageUrl("https://example.org/example");
         userModel2.setUsername("janedoe");
+        userModel2.setPassword("password");
         assertEquals(userModel, userModel2);
         int expectedHashCodeResult = userModel.hashCode();
         assertEquals(expectedHashCodeResult, userModel2.hashCode());
@@ -243,6 +249,7 @@ class UserModelDiffblueTest {
         userModel2.setRole(RoleEnum.GUEST);
         userModel2.setUserImageUrl("https://example.org/example");
         userModel2.setUsername("janedoe");
+        userModel2.setPassword("password");
         assertNotEquals(userModel, userModel2);
     }
 
@@ -261,6 +268,7 @@ class UserModelDiffblueTest {
         userModel.setRole(RoleEnum.GUEST);
         userModel.setUserImageUrl("https://example.org/example");
         userModel.setUsername("janedoe");
+        userModel.setPassword("password");
 
         UserModel userModel2 = new UserModel();
         userModel2.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
@@ -272,6 +280,7 @@ class UserModelDiffblueTest {
         userModel2.setRole(RoleEnum.GUEST);
         userModel2.setUserImageUrl("https://example.org/example");
         userModel2.setUsername("janedoe");
+        userModel2.setPassword("password");
         assertNotEquals(userModel, userModel2);
     }
 
@@ -290,6 +299,7 @@ class UserModelDiffblueTest {
         userModel.setRole(RoleEnum.GUEST);
         userModel.setUserImageUrl("https://example.org/example");
         userModel.setUsername("janedoe");
+        userModel.setPassword("password");
 
         UserModel userModel2 = new UserModel();
         userModel2.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
@@ -301,6 +311,7 @@ class UserModelDiffblueTest {
         userModel2.setRole(RoleEnum.GUEST);
         userModel2.setUserImageUrl("https://example.org/example");
         userModel2.setUsername("janedoe");
+        userModel2.setPassword("password");
         assertNotEquals(userModel, userModel2);
     }
 
@@ -319,6 +330,7 @@ class UserModelDiffblueTest {
         userModel.setRole(RoleEnum.GUEST);
         userModel.setUserImageUrl("https://example.org/example");
         userModel.setUsername("janedoe");
+        userModel.setPassword("password");
 
         UserModel userModel2 = new UserModel();
         userModel2.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
@@ -330,6 +342,7 @@ class UserModelDiffblueTest {
         userModel2.setRole(RoleEnum.GUEST);
         userModel2.setUserImageUrl("https://example.org/example");
         userModel2.setUsername("janedoe");
+        userModel2.setPassword("password");
         assertNotEquals(userModel, userModel2);
     }
 
@@ -348,6 +361,7 @@ class UserModelDiffblueTest {
         userModel.setRole(RoleEnum.GUEST);
         userModel.setUserImageUrl("https://example.org/example");
         userModel.setUsername("janedoe");
+        userModel.setPassword("password");
 
         UserModel userModel2 = new UserModel();
         userModel2.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
@@ -359,6 +373,7 @@ class UserModelDiffblueTest {
         userModel2.setRole(RoleEnum.GUEST);
         userModel2.setUserImageUrl("https://example.org/example");
         userModel2.setUsername("janedoe");
+        userModel2.setPassword("password");
         assertNotEquals(userModel, userModel2);
     }
 
@@ -386,6 +401,7 @@ class UserModelDiffblueTest {
         user.setRole(RoleEnum.GUEST);
         user.setUserImageUrl("https://example.org/example");
         user.setUsername("janedoe");
+        user.setPassword("password");
 
         WeightGoalModel weightGoal = new WeightGoalModel();
         weightGoal.setCurrentWeight(3);
@@ -427,6 +443,7 @@ class UserModelDiffblueTest {
         user2.setRole(RoleEnum.GUEST);
         user2.setUserImageUrl("https://example.org/example");
         user2.setUsername("janedoe");
+        user2.setPassword("password");
 
         WeightGoalModel weightGoal2 = new WeightGoalModel();
         weightGoal2.setCurrentWeight(3);
@@ -458,6 +475,7 @@ class UserModelDiffblueTest {
         user3.setRole(RoleEnum.GUEST);
         user3.setUserImageUrl("https://example.org/example");
         user3.setUsername("janedoe");
+        user3.setPassword("password");
 
         DistanceGoalModel distanceGoal4 = new DistanceGoalModel();
         distanceGoal4.setDistance(1L);
@@ -478,6 +496,7 @@ class UserModelDiffblueTest {
         user4.setRole(RoleEnum.GUEST);
         user4.setUserImageUrl("https://example.org/example");
         user4.setUsername("janedoe");
+        user4.setPassword("password");
 
         WeightGoalModel weightGoal3 = new WeightGoalModel();
         weightGoal3.setCurrentWeight(3);
@@ -524,6 +543,7 @@ class UserModelDiffblueTest {
         userModel.setRole(RoleEnum.GUEST);
         userModel.setUserImageUrl("https://example.org/example");
         userModel.setUsername("janedoe");
+        userModel.setPassword("password");
 
         UserModel userModel2 = new UserModel();
         userModel2.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
@@ -535,6 +555,7 @@ class UserModelDiffblueTest {
         userModel2.setRole(RoleEnum.GUEST);
         userModel2.setUserImageUrl("https://example.org/example");
         userModel2.setUsername("janedoe");
+        userModel2.setPassword("password");
         assertNotEquals(userModel, userModel2);
     }
 }

@@ -13,7 +13,7 @@ public class UserDtoMapper {
         UserModel userModel = new UserModel();
         userModel.setUsername(userRequest.getUsername());
         userModel.setPassword(userRequest.getPassword());
-        userModel.setFirstName(userModel.getFirstName());
+        userModel.setFirstName(userRequest.getFirstName());
         userModel.setLastName(userRequest.getLastName());
         userModel.setEmail(userRequest.getEmail());
         userModel.setCreateDate(userRequest.getCreateDate());

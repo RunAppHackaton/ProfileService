@@ -29,11 +29,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -58,9 +61,23 @@ class UserServiceDiffblueTest {
     @MockBean
     private WeightGoalRepository weightGoalRepository;
 
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+
     /**
      * Method under test: {@link UserService#createUser(UserModel)}
      */
+
+    @BeforeEach
+    void setUp() {
+        //sets PasswordEncoder as a BCryptPasswordEncoder *have no idea I have to do that*
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        when(passwordEncoder.encode(Mockito.anyString())).thenAnswer(invocation -> {
+            String rawPassword = invocation.getArgument(0);
+            return encoder.encode(rawPassword);
+        });
+    }
+
     @Test
     void testCreateUser() {
         UserModel userModel = new UserModel();
@@ -73,21 +90,23 @@ class UserServiceDiffblueTest {
         userModel.setRole(RoleEnum.GUEST);
         userModel.setUserImageUrl("https://example.org/example");
         userModel.setUsername("janedoe");
+        userModel.setPassword("password");
+
+        // Create a single instance of BCryptPasswordEncoder
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
         when(userRepository.save(Mockito.<UserModel>any())).thenReturn(userModel);
 
-        UserModel user = new UserModel();
-        user.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        user.setEmail("jane.doe@example.org");
-        user.setFirstName("Jane");
-        user.setGoalModelList(new ArrayList<>());
-        user.setId(1);
-        user.setLastName("Doe");
-        user.setRole(RoleEnum.GUEST);
-        user.setUserImageUrl("https://example.org/example");
-        user.setUsername("janedoe");
-        UserModel actualCreateUserResult = userService.createUser(user);
-        verify(userRepository).save(Mockito.<UserModel>any());
+        // Act
+        UserModel actualCreateUserResult = userService.createUser(userModel);
+
+        // Assert
         assertSame(userModel, actualCreateUserResult);
+
+        // Compare passwords if encoded with BCryptPasswordEncoder
+        assertTrue(encoder.matches("password", actualCreateUserResult.getPassword()));
+
+
     }
 
     /**
@@ -105,6 +124,7 @@ class UserServiceDiffblueTest {
         userModel.setRole(RoleEnum.GUEST);
         userModel.setUserImageUrl("https://example.org/example");
         userModel.setUsername("janedoe");
+        userModel.setPassword("password");
         Optional<UserModel> ofResult = Optional.of(userModel);
         when(userRepository.findById(Mockito.<Integer>any())).thenReturn(ofResult);
         Optional<UserModel> actualUserById = userService.getUserById(1);
@@ -141,6 +161,7 @@ class UserServiceDiffblueTest {
         userModel.setRole(RoleEnum.GUEST);
         userModel.setUserImageUrl("https://example.org/example");
         userModel.setUsername("janedoe");
+        userModel.setPassword(passwordEncoder.encode("password"));
         when(userRepository.save(Mockito.<UserModel>any())).thenReturn(userModel);
         when(userRepository.existsById(Mockito.<Integer>any())).thenReturn(true);
 
@@ -150,15 +171,20 @@ class UserServiceDiffblueTest {
         updatedUser.setFirstName("Jane");
         updatedUser.setGoalModelList(new ArrayList<>());
         updatedUser.setId(1);
-        updatedUser.setLastName("Doe");
+        updatedUser.setLastName("Doe1");
         updatedUser.setRole(RoleEnum.GUEST);
         updatedUser.setUserImageUrl("https://example.org/example");
         updatedUser.setUsername("janedoe");
+        updatedUser.setPassword("password");
         UserModel actualUpdateUserResult = userService.updateUser(1, updatedUser);
         verify(userRepository).existsById(Mockito.<Integer>any());
         verify(userRepository).save(Mockito.<UserModel>any());
         assertEquals(1, updatedUser.getId());
         assertSame(userModel, actualUpdateUserResult);
+
+        // Compare passwords if encoded with BCryptPasswordEncoder
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        assertTrue(encoder.matches("password", actualUpdateUserResult.getPassword()));
     }
 
     /**
@@ -178,6 +204,7 @@ class UserServiceDiffblueTest {
         updatedUser.setRole(RoleEnum.GUEST);
         updatedUser.setUserImageUrl("https://example.org/example");
         updatedUser.setUsername("janedoe");
+        updatedUser.setPassword("password");
         UserModel actualUpdateUserResult = userService.updateUser(1, updatedUser);
         verify(userRepository).existsById(Mockito.<Integer>any());
         assertNull(actualUpdateUserResult);
@@ -209,6 +236,7 @@ class UserServiceDiffblueTest {
         userModel.setRole(RoleEnum.GUEST);
         userModel.setUserImageUrl("https://example.org/example");
         userModel.setUsername("janedoe");
+        userModel.setPassword("password");
         Optional<UserModel> ofResult = Optional.of(userModel);
         when(userRepository.findById(Mockito.<Integer>any())).thenReturn(ofResult);
 
@@ -251,6 +279,7 @@ class UserServiceDiffblueTest {
         user.setRole(RoleEnum.GUEST);
         user.setUserImageUrl("https://example.org/example");
         user.setUsername("janedoe");
+        user.setPassword("password");
 
         GoalModel goalModel3 = new GoalModel();
         goalModel3.setDateStart(LocalDate.of(1970, 1, 1).atStartOfDay());
@@ -322,6 +351,7 @@ class UserServiceDiffblueTest {
         user2.setRole(RoleEnum.GUEST);
         user2.setUserImageUrl("https://example.org/example");
         user2.setUsername("janedoe");
+        user2.setPassword("password");
 
         GoalModel goalModel7 = new GoalModel();
         goalModel7.setDateStart(LocalDate.of(1970, 1, 1).atStartOfDay());
@@ -363,6 +393,7 @@ class UserServiceDiffblueTest {
         user3.setRole(RoleEnum.GUEST);
         user3.setUserImageUrl("https://example.org/example");
         user3.setUsername("janedoe");
+        user3.setPassword("password");
 
         GoalModel goalModel9 = new GoalModel();
         goalModel9.setDateStart(LocalDate.of(1970, 1, 1).atStartOfDay());
@@ -403,6 +434,7 @@ class UserServiceDiffblueTest {
         user4.setRole(RoleEnum.GUEST);
         user4.setUserImageUrl("https://example.org/example");
         user4.setUsername("janedoe");
+        user4.setPassword("password");
 
         GoalModel goalModel11 = new GoalModel();
         goalModel11.setDateStart(LocalDate.of(1970, 1, 1).atStartOfDay());
@@ -466,6 +498,7 @@ class UserServiceDiffblueTest {
         user5.setRole(RoleEnum.GUEST);
         user5.setUserImageUrl("https://example.org/example");
         user5.setUsername("janedoe");
+        user5.setPassword("password");
 
         WeightGoalModel weightGoal5 = new WeightGoalModel();
         weightGoal5.setCurrentWeight(3);
@@ -507,6 +540,7 @@ class UserServiceDiffblueTest {
         user6.setRole(RoleEnum.GUEST);
         user6.setUserImageUrl("https://example.org/example");
         user6.setUsername("janedoe");
+        user6.setPassword("password");
 
         WeightGoalModel weightGoal6 = new WeightGoalModel();
         weightGoal6.setCurrentWeight(3);
@@ -538,6 +572,7 @@ class UserServiceDiffblueTest {
         user7.setRole(RoleEnum.GUEST);
         user7.setUserImageUrl("https://example.org/example");
         user7.setUsername("janedoe");
+        user7.setPassword("password");
 
         DistanceGoalModel distanceGoal8 = new DistanceGoalModel();
         distanceGoal8.setDistance(1L);
@@ -558,6 +593,7 @@ class UserServiceDiffblueTest {
         user8.setRole(RoleEnum.GUEST);
         user8.setUserImageUrl("https://example.org/example");
         user8.setUsername("janedoe");
+        user8.setPassword("password");
 
         WeightGoalModel weightGoal7 = new WeightGoalModel();
         weightGoal7.setCurrentWeight(3);
@@ -620,6 +656,7 @@ class UserServiceDiffblueTest {
         userModel.setRole(RoleEnum.GUEST);
         userModel.setUserImageUrl("https://example.org/example");
         userModel.setUsername("janedoe");
+        userModel.setPassword("password");
         Optional<UserModel> ofResult = Optional.of(userModel);
         when(userRepository.findById(Mockito.<Integer>any())).thenReturn(ofResult);
 
@@ -662,6 +699,7 @@ class UserServiceDiffblueTest {
         user.setRole(RoleEnum.GUEST);
         user.setUserImageUrl("https://example.org/example");
         user.setUsername("janedoe");
+        user.setPassword("password");
 
         GoalModel goalModel3 = new GoalModel();
         goalModel3.setDateStart(LocalDate.of(1970, 1, 1).atStartOfDay());
@@ -733,6 +771,7 @@ class UserServiceDiffblueTest {
         user2.setRole(RoleEnum.GUEST);
         user2.setUserImageUrl("https://example.org/example");
         user2.setUsername("janedoe");
+        user2.setPassword("password");
 
         GoalModel goalModel7 = new GoalModel();
         goalModel7.setDateStart(LocalDate.of(1970, 1, 1).atStartOfDay());
@@ -774,6 +813,7 @@ class UserServiceDiffblueTest {
         user3.setRole(RoleEnum.GUEST);
         user3.setUserImageUrl("https://example.org/example");
         user3.setUsername("janedoe");
+        user3.setPassword("password");
 
         GoalModel goalModel9 = new GoalModel();
         goalModel9.setDateStart(LocalDate.of(1970, 1, 1).atStartOfDay());
@@ -814,6 +854,7 @@ class UserServiceDiffblueTest {
         user4.setRole(RoleEnum.GUEST);
         user4.setUserImageUrl("https://example.org/example");
         user4.setUsername("janedoe");
+        user4.setPassword("password");
 
         GoalModel goalModel11 = new GoalModel();
         goalModel11.setDateStart(LocalDate.of(1970, 1, 1).atStartOfDay());
@@ -877,6 +918,7 @@ class UserServiceDiffblueTest {
         user5.setRole(RoleEnum.GUEST);
         user5.setUserImageUrl("https://example.org/example");
         user5.setUsername("janedoe");
+        user5.setPassword("password");
 
         WeightGoalModel weightGoal5 = new WeightGoalModel();
         weightGoal5.setCurrentWeight(3);
@@ -918,6 +960,7 @@ class UserServiceDiffblueTest {
         user6.setRole(RoleEnum.GUEST);
         user6.setUserImageUrl("https://example.org/example");
         user6.setUsername("janedoe");
+        user6.setPassword("password");
 
         WeightGoalModel weightGoal6 = new WeightGoalModel();
         weightGoal6.setCurrentWeight(3);
@@ -949,6 +992,7 @@ class UserServiceDiffblueTest {
         user7.setRole(RoleEnum.GUEST);
         user7.setUserImageUrl("https://example.org/example");
         user7.setUsername("janedoe");
+        user7.setPassword("password");
 
         DistanceGoalModel distanceGoal8 = new DistanceGoalModel();
         distanceGoal8.setDistance(1L);
@@ -969,6 +1013,7 @@ class UserServiceDiffblueTest {
         user8.setRole(RoleEnum.GUEST);
         user8.setUserImageUrl("https://example.org/example");
         user8.setUsername("janedoe");
+        user8.setPassword("password");
 
         WeightGoalModel weightGoal7 = new WeightGoalModel();
         weightGoal7.setCurrentWeight(3);
@@ -1030,6 +1075,7 @@ class UserServiceDiffblueTest {
         userModel.setRole(RoleEnum.GUEST);
         userModel.setUserImageUrl("https://example.org/example");
         userModel.setUsername("janedoe");
+        userModel.setPassword("password");
         Optional<UserModel> ofResult = Optional.of(userModel);
         when(userRepository.findById(Mockito.<Integer>any())).thenReturn(ofResult);
 
@@ -1072,6 +1118,7 @@ class UserServiceDiffblueTest {
         user.setRole(RoleEnum.GUEST);
         user.setUserImageUrl("https://example.org/example");
         user.setUsername("janedoe");
+        user.setPassword("password");
 
         GoalModel goalModel3 = new GoalModel();
         goalModel3.setDateStart(LocalDate.of(1970, 1, 1).atStartOfDay());
@@ -1143,6 +1190,7 @@ class UserServiceDiffblueTest {
         user2.setRole(RoleEnum.GUEST);
         user2.setUserImageUrl("https://example.org/example");
         user2.setUsername("janedoe");
+        user2.setPassword("password");
 
         GoalModel goalModel7 = new GoalModel();
         goalModel7.setDateStart(LocalDate.of(1970, 1, 1).atStartOfDay());
@@ -1184,6 +1232,7 @@ class UserServiceDiffblueTest {
         user3.setRole(RoleEnum.GUEST);
         user3.setUserImageUrl("https://example.org/example");
         user3.setUsername("janedoe");
+        user3.setPassword("password");
 
         GoalModel goalModel9 = new GoalModel();
         goalModel9.setDateStart(LocalDate.of(1970, 1, 1).atStartOfDay());
@@ -1224,6 +1273,7 @@ class UserServiceDiffblueTest {
         user4.setRole(RoleEnum.GUEST);
         user4.setUserImageUrl("https://example.org/example");
         user4.setUsername("janedoe");
+        user4.setPassword("password");
 
         GoalModel goalModel11 = new GoalModel();
         goalModel11.setDateStart(LocalDate.of(1970, 1, 1).atStartOfDay());
@@ -1287,6 +1337,7 @@ class UserServiceDiffblueTest {
         user5.setRole(RoleEnum.GUEST);
         user5.setUserImageUrl("https://example.org/example");
         user5.setUsername("janedoe");
+        user5.setPassword("password");
 
         WeightGoalModel weightGoal5 = new WeightGoalModel();
         weightGoal5.setCurrentWeight(3);
@@ -1328,6 +1379,7 @@ class UserServiceDiffblueTest {
         user6.setRole(RoleEnum.GUEST);
         user6.setUserImageUrl("https://example.org/example");
         user6.setUsername("janedoe");
+        user6.setPassword("password");
 
         WeightGoalModel weightGoal6 = new WeightGoalModel();
         weightGoal6.setCurrentWeight(3);
@@ -1359,6 +1411,7 @@ class UserServiceDiffblueTest {
         user7.setRole(RoleEnum.GUEST);
         user7.setUserImageUrl("https://example.org/example");
         user7.setUsername("janedoe");
+        user7.setPassword("password");
 
         DistanceGoalModel distanceGoal8 = new DistanceGoalModel();
         distanceGoal8.setDistance(1L);
@@ -1379,6 +1432,7 @@ class UserServiceDiffblueTest {
         user8.setRole(RoleEnum.GUEST);
         user8.setUserImageUrl("https://example.org/example");
         user8.setUsername("janedoe");
+        user8.setPassword("password");
 
         WeightGoalModel weightGoal7 = new WeightGoalModel();
         weightGoal7.setCurrentWeight(3);

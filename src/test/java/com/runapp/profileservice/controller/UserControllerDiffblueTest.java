@@ -50,6 +50,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.ResultActions;
@@ -77,6 +78,9 @@ class UserControllerDiffblueTest {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private PasswordEncoder passwordEncoder;
 
     /**
      * Method under test:
@@ -115,9 +119,9 @@ class UserControllerDiffblueTest {
         UserRepository userRepository = mock(UserRepository.class);
         when(userRepository.save(Mockito.<UserModel>any())).thenReturn(userModel);
         UserService userService = new UserService(userRepository, mock(GoalRepository.class),
-                mock(DistanceGoalRepository.class), mock(DurationGoalRepository.class), mock(WeightGoalRepository.class));
+                mock(DistanceGoalRepository.class), mock(DurationGoalRepository.class), mock(WeightGoalRepository.class), passwordEncoder);
 
-        UserController userController = new UserController(userService, new UserDtoMapper());
+        UserController userController = new UserController(userService, new UserDtoMapper(), storageServiceClient);
         UserRequest userRequest = new UserRequest();
         ResponseEntity<Object> actualCreateUserResult = userController.createUser(userRequest,
                 new BindException("Target", "Object Name"));
@@ -171,7 +175,7 @@ class UserControllerDiffblueTest {
         userModel.setUsername("janedoe");
         UserService userService = mock(UserService.class);
         when(userService.createUser(Mockito.<UserModel>any())).thenReturn(userModel);
-        UserController userController = new UserController(userService, new UserDtoMapper());
+        UserController userController = new UserController(userService, new UserDtoMapper(), storageServiceClient);
         UserRequest userRequest = new UserRequest();
         ResponseEntity<Object> actualCreateUserResult = userController.createUser(userRequest,
                 new BindException("Target", "Object Name"));
@@ -239,7 +243,7 @@ class UserControllerDiffblueTest {
         UserDtoMapper userDtoMapper = mock(UserDtoMapper.class);
         when(userDtoMapper.toResponse(Mockito.<UserModel>any())).thenReturn(new UserResponse());
         when(userDtoMapper.toModel(Mockito.<UserRequest>any())).thenReturn(userModel2);
-        UserController userController = new UserController(userService, userDtoMapper);
+        UserController userController = new UserController(userService, userDtoMapper, storageServiceClient);
         UserRequest userRequest = new UserRequest();
         ResponseEntity<Object> actualCreateUserResult = userController.createUser(userRequest,
                 new BindException("Target", "Object Name"));
@@ -275,7 +279,7 @@ class UserControllerDiffblueTest {
         //       at com.fasterxml.jackson.databind.ObjectMapper.writeValueAsString(ObjectMapper.java:3964)
         //   See https://diff.blue/R013 to resolve this issue.
 
-        UserController userController = new UserController(mock(UserService.class), mock(UserDtoMapper.class));
+        UserController userController = new UserController(mock(UserService.class), mock(UserDtoMapper.class), storageServiceClient);
         UserRequest userRequest = new UserRequest();
         BeanPropertyBindingResult bindingResult = mock(BeanPropertyBindingResult.class);
         when(bindingResult.getFieldErrors()).thenReturn(new ArrayList<>());
@@ -312,7 +316,7 @@ class UserControllerDiffblueTest {
         //       at com.fasterxml.jackson.databind.ObjectMapper.writeValueAsString(ObjectMapper.java:3964)
         //   See https://diff.blue/R013 to resolve this issue.
 
-        UserController userController = new UserController(mock(UserService.class), mock(UserDtoMapper.class));
+        UserController userController = new UserController(mock(UserService.class), mock(UserDtoMapper.class), storageServiceClient);
         UserRequest userRequest = new UserRequest();
 
         ArrayList<FieldError> fieldErrorList = new ArrayList<>();
@@ -355,7 +359,7 @@ class UserControllerDiffblueTest {
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content()
                         .string(
-                                "{\"id\":0,\"username\":null,\"firstName\":null,\"lastName\":null,\"role\":null,\"email\":null,\"createDate\":null,"
+                                "{\"id\":0,\"username\":null,\"password\":null,\"firstName\":null,\"lastName\":null,\"role\":null,\"email\":null,\"createDate\":null,"
                                         + "\"userImageUrl\":null}"));
     }
 
@@ -427,9 +431,9 @@ class UserControllerDiffblueTest {
         when(userRepository.save(Mockito.<UserModel>any())).thenReturn(userModel);
         when(userRepository.existsById(Mockito.<Integer>any())).thenReturn(true);
         UserService userService = new UserService(userRepository, mock(GoalRepository.class),
-                mock(DistanceGoalRepository.class), mock(DurationGoalRepository.class), mock(WeightGoalRepository.class));
+                mock(DistanceGoalRepository.class), mock(DurationGoalRepository.class), mock(WeightGoalRepository.class), passwordEncoder);
 
-        UserController userController = new UserController(userService, new UserDtoMapper());
+        UserController userController = new UserController(userService, new UserDtoMapper(), storageServiceClient);
         UserRequest userRequest = new UserRequest();
         ResponseEntity<Object> actualUpdateUserResult = userController.updateUser(1, userRequest,
                 new BindException("Target", "Object Name"));
@@ -475,9 +479,9 @@ class UserControllerDiffblueTest {
         UserRepository userRepository = mock(UserRepository.class);
         when(userRepository.existsById(Mockito.<Integer>any())).thenReturn(false);
         UserService userService = new UserService(userRepository, mock(GoalRepository.class),
-                mock(DistanceGoalRepository.class), mock(DurationGoalRepository.class), mock(WeightGoalRepository.class));
+                mock(DistanceGoalRepository.class), mock(DurationGoalRepository.class), mock(WeightGoalRepository.class), passwordEncoder);
 
-        UserController userController = new UserController(userService, new UserDtoMapper());
+        UserController userController = new UserController(userService, new UserDtoMapper(), storageServiceClient);
         UserRequest userRequest = new UserRequest();
         ResponseEntity<Object> actualUpdateUserResult = userController.updateUser(1, userRequest,
                 new BindException("Target", "Object Name"));
@@ -523,7 +527,7 @@ class UserControllerDiffblueTest {
         userModel.setUsername("janedoe");
         UserService userService = mock(UserService.class);
         when(userService.updateUser(anyInt(), Mockito.<UserModel>any())).thenReturn(userModel);
-        UserController userController = new UserController(userService, new UserDtoMapper());
+        UserController userController = new UserController(userService, new UserDtoMapper(), storageServiceClient);
         UserRequest userRequest = new UserRequest();
         ResponseEntity<Object> actualUpdateUserResult = userController.updateUser(1, userRequest,
                 new BindException("Target", "Object Name"));
@@ -591,7 +595,7 @@ class UserControllerDiffblueTest {
         UserDtoMapper userDtoMapper = mock(UserDtoMapper.class);
         when(userDtoMapper.toResponse(Mockito.<UserModel>any())).thenReturn(new UserResponse());
         when(userDtoMapper.toModel(Mockito.<UserRequest>any())).thenReturn(userModel2);
-        UserController userController = new UserController(userService, userDtoMapper);
+        UserController userController = new UserController(userService, userDtoMapper, storageServiceClient);
         UserRequest userRequest = new UserRequest();
         ResponseEntity<Object> actualUpdateUserResult = userController.updateUser(1, userRequest,
                 new BindException("Target", "Object Name"));
@@ -627,7 +631,7 @@ class UserControllerDiffblueTest {
         //       at com.fasterxml.jackson.databind.ObjectMapper.writeValueAsString(ObjectMapper.java:3964)
         //   See https://diff.blue/R013 to resolve this issue.
 
-        UserController userController = new UserController(mock(UserService.class), mock(UserDtoMapper.class));
+        UserController userController = new UserController(mock(UserService.class), mock(UserDtoMapper.class), storageServiceClient);
         UserRequest userRequest = new UserRequest();
         BeanPropertyBindingResult bindingResult = mock(BeanPropertyBindingResult.class);
         when(bindingResult.getFieldErrors()).thenReturn(new ArrayList<>());
@@ -664,7 +668,7 @@ class UserControllerDiffblueTest {
         //       at com.fasterxml.jackson.databind.ObjectMapper.writeValueAsString(ObjectMapper.java:3964)
         //   See https://diff.blue/R013 to resolve this issue.
 
-        UserController userController = new UserController(mock(UserService.class), mock(UserDtoMapper.class));
+        UserController userController = new UserController(mock(UserService.class), mock(UserDtoMapper.class), storageServiceClient);
         UserRequest userRequest = new UserRequest();
 
         ArrayList<FieldError> fieldErrorList = new ArrayList<>();
@@ -741,9 +745,9 @@ class UserControllerDiffblueTest {
         Optional<UserModel> emptyResult = Optional.empty();
         when(userRepository.findById(Mockito.<Integer>any())).thenReturn(emptyResult);
         UserService userService = new UserService(userRepository, mock(GoalRepository.class),
-                mock(DistanceGoalRepository.class), mock(DurationGoalRepository.class), mock(WeightGoalRepository.class));
+                mock(DistanceGoalRepository.class), mock(DurationGoalRepository.class), mock(WeightGoalRepository.class), passwordEncoder);
 
-        UserController userController = new UserController(userService, new UserDtoMapper());
+        UserController userController = new UserController(userService, new UserDtoMapper(), storageServiceClient);
         ResponseEntity<Object> actualUploadImageResult = userController
                 .uploadImage(new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))), 1);
         verify(userRepository).findById(Mockito.<Integer>any());
@@ -1177,9 +1181,9 @@ class UserControllerDiffblueTest {
         DistanceGoalRepository distanceGoalRepository = mock(DistanceGoalRepository.class);
         when(distanceGoalRepository.save(Mockito.<DistanceGoalModel>any())).thenReturn(distanceGoalModel);
         UserService userService = new UserService(userRepository, goalRepository, distanceGoalRepository,
-                mock(DurationGoalRepository.class), mock(WeightGoalRepository.class));
+                mock(DurationGoalRepository.class), mock(WeightGoalRepository.class), passwordEncoder);
 
-        UserController userController = new UserController(userService, new UserDtoMapper());
+        UserController userController = new UserController(userService, new UserDtoMapper(), storageServiceClient);
         ResponseEntity<DistanceGoalModel> actualAddDistanceGoalToUserResult = userController
                 .addDistanceGoalToUser(new CreateDistanceGoalRequest());
         verify(userRepository).findById(Mockito.<Integer>any());
@@ -1614,9 +1618,9 @@ class UserControllerDiffblueTest {
         DurationGoalRepository durationGoalRepository = mock(DurationGoalRepository.class);
         when(durationGoalRepository.save(Mockito.<DurationGoalModel>any())).thenReturn(durationGoalModel);
         UserService userService = new UserService(userRepository, goalRepository, mock(DistanceGoalRepository.class),
-                durationGoalRepository, mock(WeightGoalRepository.class));
+                durationGoalRepository, mock(WeightGoalRepository.class), passwordEncoder);
 
-        UserController userController = new UserController(userService, new UserDtoMapper());
+        UserController userController = new UserController(userService, new UserDtoMapper(), storageServiceClient);
         ResponseEntity<DurationGoalModel> actualAddDurationGoalToUserResult = userController
                 .addDurationGoalToUser(new CreateDurationGoalRequest());
         verify(userRepository).findById(Mockito.<Integer>any());
@@ -2053,9 +2057,9 @@ class UserControllerDiffblueTest {
         WeightGoalRepository weightGoalRepository = mock(WeightGoalRepository.class);
         when(weightGoalRepository.save(Mockito.<WeightGoalModel>any())).thenReturn(weightGoalModel);
         UserService userService = new UserService(userRepository, goalRepository, mock(DistanceGoalRepository.class),
-                mock(DurationGoalRepository.class), weightGoalRepository);
+                mock(DurationGoalRepository.class), weightGoalRepository, passwordEncoder);
 
-        UserController userController = new UserController(userService, new UserDtoMapper());
+        UserController userController = new UserController(userService, new UserDtoMapper(), storageServiceClient);
         ResponseEntity<WeightGoalModel> actualAddWeightGoalToUserResult = userController
                 .addWeightGoalToUser(new CreateWeightGoalRequest());
         verify(userRepository).findById(Mockito.<Integer>any());

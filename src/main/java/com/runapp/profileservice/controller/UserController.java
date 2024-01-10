@@ -68,8 +68,9 @@ public class UserController {
             }
             return new ResponseEntity<>(validationErrors, HttpStatus.BAD_REQUEST);
         }
-
+        System.out.println(userRequest);
         UserModel createdUser = userService.createUser(userDtoMapper.toModel(userRequest));
+        System.out.println(createdUser);
         UserResponse userResponse = userDtoMapper.toResponse(createdUser);
         return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }

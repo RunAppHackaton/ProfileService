@@ -66,6 +66,7 @@ class UserResponseDiffblueTest {
         actualUserResponse.setRole(null);
         actualUserResponse.setUserImageUrl("https://example.org/example");
         actualUserResponse.setUsername("janedoe");
+        actualUserResponse.setPassword("password");
         String actualToStringResult = actualUserResponse.toString();
         LocalDateTime actualCreateDate = actualUserResponse.getCreateDate();
         String actualEmail = actualUserResponse.getEmail();
@@ -77,7 +78,7 @@ class UserResponseDiffblueTest {
         assertEquals("Doe", actualLastName);
         assertEquals("Jane", actualFirstName);
         assertEquals(
-                "UserResponse(id=1, username=janedoe, firstName=Jane, lastName=Doe, role=null, email=jane.doe@example.org,"
+                "UserResponse(id=1, username=janedoe, password=password, firstName=Jane, lastName=Doe, role=null, email=jane.doe@example.org,"
                         + " createDate=1970-01-01T00:00, userImageUrl=https://example.org/example)",
                 actualToStringResult);
         assertEquals("https://example.org/example", actualUserImageUrl);
@@ -92,7 +93,7 @@ class UserResponseDiffblueTest {
      *
      * <ul>
      *   <li>
-     * {@link UserResponse#UserResponse(int, String, String, String, Enum, String, LocalDateTime, String)}
+     * {@link UserResponse UserResponse(int, String, String, String, Enum, String, LocalDateTime, String)}
      *   <li>{@link UserResponse#setCreateDate(LocalDateTime)}
      *   <li>{@link UserResponse#setEmail(String)}
      *   <li>{@link UserResponse#setFirstName(String)}
@@ -114,7 +115,7 @@ class UserResponseDiffblueTest {
      */
     @Test
     void testConstructor2() {
-        UserResponse actualUserResponse = new UserResponse(1, "janedoe", "Jane", "Doe", null, "jane.doe@example.org",
+        UserResponse actualUserResponse = new UserResponse(1, "janedoe","password", "Jane", "Doe", null, "jane.doe@example.org",
                 LocalDate.of(1970, 1, 1).atStartOfDay(), "https://example.org/example");
         LocalDateTime createDate = LocalDate.of(1970, 1, 1).atStartOfDay();
         actualUserResponse.setCreateDate(createDate);
@@ -125,6 +126,7 @@ class UserResponseDiffblueTest {
         actualUserResponse.setRole(null);
         actualUserResponse.setUserImageUrl("https://example.org/example");
         actualUserResponse.setUsername("janedoe");
+        actualUserResponse.setPassword("password");
         String actualToStringResult = actualUserResponse.toString();
         LocalDateTime actualCreateDate = actualUserResponse.getCreateDate();
         String actualEmail = actualUserResponse.getEmail();
@@ -136,7 +138,7 @@ class UserResponseDiffblueTest {
         assertEquals("Doe", actualLastName);
         assertEquals("Jane", actualFirstName);
         assertEquals(
-                "UserResponse(id=1, username=janedoe, firstName=Jane, lastName=Doe, role=null, email=jane.doe@example.org,"
+                "UserResponse(id=1, username=janedoe, password=password, firstName=Jane, lastName=Doe, role=null, email=jane.doe@example.org,"
                         + " createDate=1970-01-01T00:00, userImageUrl=https://example.org/example)",
                 actualToStringResult);
         assertEquals("https://example.org/example", actualUserImageUrl);
@@ -193,7 +195,7 @@ class UserResponseDiffblueTest {
      */
     @Test
     void testEquals4() {
-        UserResponse userResponse = new UserResponse(1, "janedoe", "Jane", "Doe", null, "jane.doe@example.org",
+        UserResponse userResponse = new UserResponse(1, "janedoe","password", "Jane", "Doe", null, "jane.doe@example.org",
                 LocalDate.of(1970, 1, 1).atStartOfDay(), "https://example.org/example");
         assertNotEquals(userResponse, new UserResponse());
     }
@@ -268,9 +270,9 @@ class UserResponseDiffblueTest {
      */
     @Test
     void testEquals11() {
-        UserResponse userResponse = new UserResponse(1, "janedoe", "Jane", "Doe", null, "jane.doe@example.org",
+        UserResponse userResponse = new UserResponse(1, "janedoe","password", "Jane", "Doe", null, "jane.doe@example.org",
                 LocalDate.of(1970, 1, 1).atStartOfDay(), "https://example.org/example");
-        UserResponse userResponse2 = new UserResponse(1, "janedoe", "Jane", "Doe", null, "jane.doe@example.org",
+        UserResponse userResponse2 = new UserResponse(1, "janedoe","password", "Jane", "Doe", null, "jane.doe@example.org",
                 LocalDate.of(1970, 1, 1).atStartOfDay(), "https://example.org/example");
 
         assertEquals(userResponse, userResponse2);

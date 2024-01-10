@@ -65,6 +65,7 @@ class DistanceGoalModelDiffblueTest {
         user.setRole(RoleEnum.GUEST);
         user.setUserImageUrl("https://example.org/example");
         user.setUsername("janedoe");
+        user.setPassword("password");
 
         WeightGoalModel weightGoal = new WeightGoalModel();
         weightGoal.setCurrentWeight(3);
@@ -106,6 +107,7 @@ class DistanceGoalModelDiffblueTest {
         user2.setRole(RoleEnum.GUEST);
         user2.setUserImageUrl("https://example.org/example");
         user2.setUsername("janedoe");
+        user2.setPassword("password");
 
         WeightGoalModel weightGoal2 = new WeightGoalModel();
         weightGoal2.setCurrentWeight(3);
@@ -137,6 +139,7 @@ class DistanceGoalModelDiffblueTest {
         user3.setRole(RoleEnum.GUEST);
         user3.setUserImageUrl("https://example.org/example");
         user3.setUsername("janedoe");
+        user3.setPassword("password");
 
         DistanceGoalModel distanceGoal4 = new DistanceGoalModel();
         distanceGoal4.setDistance(3L);
@@ -157,6 +160,7 @@ class DistanceGoalModelDiffblueTest {
         user4.setRole(RoleEnum.GUEST);
         user4.setUserImageUrl("https://example.org/example");
         user4.setUsername("janedoe");
+        user4.setPassword("password");
 
         WeightGoalModel weightGoal3 = new WeightGoalModel();
         weightGoal3.setCurrentWeight(3);
@@ -223,6 +227,7 @@ class DistanceGoalModelDiffblueTest {
         user.setRole(RoleEnum.GUEST);
         user.setUserImageUrl("https://example.org/example");
         user.setUsername("janedoe");
+        user.setPassword("password");
 
         WeightGoalModel weightGoal = new WeightGoalModel();
         weightGoal.setCurrentWeight(3);
@@ -264,6 +269,7 @@ class DistanceGoalModelDiffblueTest {
         user2.setRole(RoleEnum.GUEST);
         user2.setUserImageUrl("https://example.org/example");
         user2.setUsername("janedoe");
+        user2.setPassword("password");
 
         WeightGoalModel weightGoal2 = new WeightGoalModel();
         weightGoal2.setCurrentWeight(3);
@@ -295,6 +301,7 @@ class DistanceGoalModelDiffblueTest {
         user3.setRole(RoleEnum.GUEST);
         user3.setUserImageUrl("https://example.org/example");
         user3.setUsername("janedoe");
+        user3.setPassword("password");
 
         DistanceGoalModel distanceGoal4 = new DistanceGoalModel();
         distanceGoal4.setDistance(3L);
@@ -315,6 +322,7 @@ class DistanceGoalModelDiffblueTest {
         user4.setRole(RoleEnum.GUEST);
         user4.setUserImageUrl("https://example.org/example");
         user4.setUsername("janedoe");
+        user4.setPassword("password");
 
         WeightGoalModel weightGoal3 = new WeightGoalModel();
         weightGoal3.setCurrentWeight(3);
@@ -406,6 +414,7 @@ class DistanceGoalModelDiffblueTest {
         user.setRole(RoleEnum.GUEST);
         user.setUserImageUrl("https://example.org/example");
         user.setUsername("janedoe");
+        user.setPassword("password");
         WeightGoalModel weightGoal = new WeightGoalModel();
         weightGoal.setCurrentWeight(3);
         weightGoal.setGoalModel(new GoalModel());
@@ -441,6 +450,7 @@ class DistanceGoalModelDiffblueTest {
         user2.setRole(RoleEnum.GUEST);
         user2.setUserImageUrl("https://example.org/example");
         user2.setUsername("janedoe");
+        user2.setPassword("password");
         WeightGoalModel weightGoal2 = new WeightGoalModel();
         weightGoal2.setCurrentWeight(3);
         weightGoal2.setGoalModel(new GoalModel());
@@ -468,6 +478,7 @@ class DistanceGoalModelDiffblueTest {
         user3.setRole(RoleEnum.GUEST);
         user3.setUserImageUrl("https://example.org/example");
         user3.setUsername("janedoe");
+        user3.setPassword("password");
         DistanceGoalModel distanceGoal4 = new DistanceGoalModel();
         distanceGoal4.setDistance(1L);
         distanceGoal4.setGoalModel(new GoalModel());
@@ -485,6 +496,7 @@ class DistanceGoalModelDiffblueTest {
         user4.setRole(RoleEnum.GUEST);
         user4.setUserImageUrl("https://example.org/example");
         user4.setUsername("janedoe");
+        user4.setPassword("password");
         WeightGoalModel weightGoal3 = new WeightGoalModel();
         weightGoal3.setCurrentWeight(3);
         weightGoal3.setGoalModel(new GoalModel());
@@ -528,7 +540,7 @@ class DistanceGoalModelDiffblueTest {
                         + " dateStop=null, goalTypeEnum=null, distanceGoal=null, durationGoal=null, weightGoal=null, user=null)),"
                         + " weightGoal=WeightGoalModel(id=1, currentWeight=3, targetWeight=3, goalModel=GoalModel(id=null,"
                         + " dateStart=null, dateStop=null, goalTypeEnum=null, distanceGoal=null, durationGoal=null, weightGoal=null,"
-                        + " user=null)), user=UserModel(id=1, username=janedoe, firstName=Jane, lastName=Doe, role=GUEST,"
+                        + " user=null)), user=UserModel(id=1, username=janedoe, password=password, firstName=Jane, lastName=Doe, role=GUEST,"
                         + " email=jane.doe@example.org, createDate=1970-01-01T00:00, userImageUrl=https://example.org/example,"
                         + " goalModelList=[]))), durationGoal=DurationGoalModel(id=1, runningTime=null, goalModel=GoalModel(id=1,"
                         + " dateStart=1970-01-01T00:00, dateStop=1970-01-01T00:00, goalTypeEnum=DISTANCE_GOAL, distanceGoal"
@@ -538,7 +550,7 @@ class DistanceGoalModelDiffblueTest {
                         + " goalTypeEnum=null, distanceGoal=null, durationGoal=null, weightGoal=null, user=null)), weightGoal"
                         + "=WeightGoalModel(id=1, currentWeight=3, targetWeight=3, goalModel=GoalModel(id=null, dateStart=null,"
                         + " dateStop=null, goalTypeEnum=null, distanceGoal=null, durationGoal=null, weightGoal=null, user=null)),"
-                        + " user=UserModel(id=1, username=janedoe, firstName=Jane, lastName=Doe, role=GUEST, email=jane.doe@example.org,"
+                        + " user=UserModel(id=1, username=janedoe, password=password, firstName=Jane, lastName=Doe, role=GUEST, email=jane.doe@example.org,"
                         + " createDate=1970-01-01T00:00, userImageUrl=https://example.org/example, goalModelList=[]))),"
                         + " weightGoal=WeightGoalModel(id=1, currentWeight=3, targetWeight=3, goalModel=GoalModel(id=1,"
                         + " dateStart=1970-01-01T00:00, dateStop=1970-01-01T00:00, goalTypeEnum=DISTANCE_GOAL, distanceGoal"
@@ -548,9 +560,9 @@ class DistanceGoalModelDiffblueTest {
                         + " goalTypeEnum=null, distanceGoal=null, durationGoal=null, weightGoal=null, user=null)), weightGoal"
                         + "=WeightGoalModel(id=1, currentWeight=3, targetWeight=3, goalModel=GoalModel(id=null, dateStart=null,"
                         + " dateStop=null, goalTypeEnum=null, distanceGoal=null, durationGoal=null, weightGoal=null, user=null)),"
-                        + " user=UserModel(id=1, username=janedoe, firstName=Jane, lastName=Doe, role=GUEST, email=jane.doe@example.org,"
+                        + " user=UserModel(id=1, username=janedoe, password=password, firstName=Jane, lastName=Doe, role=GUEST, email=jane.doe@example.org,"
                         + " createDate=1970-01-01T00:00, userImageUrl=https://example.org/example, goalModelList=[]))),"
-                        + " user=UserModel(id=1, username=janedoe, firstName=Jane, lastName=Doe, role=GUEST, email=jane.doe@example.org,"
+                        + " user=UserModel(id=1, username=janedoe, password=password, firstName=Jane, lastName=Doe, role=GUEST, email=jane.doe@example.org,"
                         + " createDate=1970-01-01T00:00, userImageUrl=https://example.org/example, goalModelList=[])))",
                 actualToStringResult);
         assertEquals(1L, actualDistance.longValue());
@@ -594,6 +606,7 @@ class DistanceGoalModelDiffblueTest {
         user.setRole(RoleEnum.GUEST);
         user.setUserImageUrl("https://example.org/example");
         user.setUsername("janedoe");
+        user.setPassword("password");
 
         WeightGoalModel weightGoal = new WeightGoalModel();
         weightGoal.setCurrentWeight(3);
@@ -635,6 +648,7 @@ class DistanceGoalModelDiffblueTest {
         user2.setRole(RoleEnum.GUEST);
         user2.setUserImageUrl("https://example.org/example");
         user2.setUsername("janedoe");
+        user2.setPassword("password");
 
         WeightGoalModel weightGoal2 = new WeightGoalModel();
         weightGoal2.setCurrentWeight(3);
@@ -666,6 +680,7 @@ class DistanceGoalModelDiffblueTest {
         user3.setRole(RoleEnum.GUEST);
         user3.setUserImageUrl("https://example.org/example");
         user3.setUsername("janedoe");
+        user3.setPassword("password");
 
         DistanceGoalModel distanceGoal4 = new DistanceGoalModel();
         distanceGoal4.setDistance(1L);
@@ -686,6 +701,7 @@ class DistanceGoalModelDiffblueTest {
         user4.setRole(RoleEnum.GUEST);
         user4.setUserImageUrl("https://example.org/example");
         user4.setUsername("janedoe");
+        user4.setPassword("password");
 
         WeightGoalModel weightGoal3 = new WeightGoalModel();
         weightGoal3.setCurrentWeight(3);
@@ -737,6 +753,7 @@ class DistanceGoalModelDiffblueTest {
         user5.setRole(RoleEnum.GUEST);
         user5.setUserImageUrl("https://example.org/example");
         user5.setUsername("janedoe");
+        user5.setPassword("password");
         WeightGoalModel weightGoal5 = new WeightGoalModel();
         weightGoal5.setCurrentWeight(3);
         weightGoal5.setGoalModel(new GoalModel());
@@ -772,6 +789,7 @@ class DistanceGoalModelDiffblueTest {
         user6.setRole(RoleEnum.GUEST);
         user6.setUserImageUrl("https://example.org/example");
         user6.setUsername("janedoe");
+        user6.setPassword("password");
         WeightGoalModel weightGoal6 = new WeightGoalModel();
         weightGoal6.setCurrentWeight(3);
         weightGoal6.setGoalModel(new GoalModel());
@@ -799,6 +817,7 @@ class DistanceGoalModelDiffblueTest {
         user7.setRole(RoleEnum.GUEST);
         user7.setUserImageUrl("https://example.org/example");
         user7.setUsername("janedoe");
+        user7.setPassword("password");;
         DistanceGoalModel distanceGoal8 = new DistanceGoalModel();
         distanceGoal8.setDistance(1L);
         distanceGoal8.setGoalModel(new GoalModel());
@@ -816,6 +835,7 @@ class DistanceGoalModelDiffblueTest {
         user8.setRole(RoleEnum.GUEST);
         user8.setUserImageUrl("https://example.org/example");
         user8.setUsername("janedoe");
+        user8.setPassword("password");
         WeightGoalModel weightGoal7 = new WeightGoalModel();
         weightGoal7.setCurrentWeight(3);
         weightGoal7.setGoalModel(new GoalModel());
@@ -859,7 +879,7 @@ class DistanceGoalModelDiffblueTest {
                         + " dateStop=null, goalTypeEnum=null, distanceGoal=null, durationGoal=null, weightGoal=null, user=null)),"
                         + " weightGoal=WeightGoalModel(id=1, currentWeight=3, targetWeight=3, goalModel=GoalModel(id=null,"
                         + " dateStart=null, dateStop=null, goalTypeEnum=null, distanceGoal=null, durationGoal=null, weightGoal=null,"
-                        + " user=null)), user=UserModel(id=1, username=janedoe, firstName=Jane, lastName=Doe, role=GUEST,"
+                        + " user=null)), user=UserModel(id=1, username=janedoe, password=password, firstName=Jane, lastName=Doe, role=GUEST,"
                         + " email=jane.doe@example.org, createDate=1970-01-01T00:00, userImageUrl=https://example.org/example,"
                         + " goalModelList=[]))), durationGoal=DurationGoalModel(id=1, runningTime=null, goalModel=GoalModel(id=1,"
                         + " dateStart=1970-01-01T00:00, dateStop=1970-01-01T00:00, goalTypeEnum=DISTANCE_GOAL, distanceGoal"
@@ -869,7 +889,7 @@ class DistanceGoalModelDiffblueTest {
                         + " goalTypeEnum=null, distanceGoal=null, durationGoal=null, weightGoal=null, user=null)), weightGoal"
                         + "=WeightGoalModel(id=1, currentWeight=3, targetWeight=3, goalModel=GoalModel(id=null, dateStart=null,"
                         + " dateStop=null, goalTypeEnum=null, distanceGoal=null, durationGoal=null, weightGoal=null, user=null)),"
-                        + " user=UserModel(id=1, username=janedoe, firstName=Jane, lastName=Doe, role=GUEST, email=jane.doe@example.org,"
+                        + " user=UserModel(id=1, username=janedoe, password=password, firstName=Jane, lastName=Doe, role=GUEST, email=jane.doe@example.org,"
                         + " createDate=1970-01-01T00:00, userImageUrl=https://example.org/example, goalModelList=[]))),"
                         + " weightGoal=WeightGoalModel(id=1, currentWeight=3, targetWeight=3, goalModel=GoalModel(id=1,"
                         + " dateStart=1970-01-01T00:00, dateStop=1970-01-01T00:00, goalTypeEnum=DISTANCE_GOAL, distanceGoal"
@@ -879,9 +899,9 @@ class DistanceGoalModelDiffblueTest {
                         + " goalTypeEnum=null, distanceGoal=null, durationGoal=null, weightGoal=null, user=null)), weightGoal"
                         + "=WeightGoalModel(id=1, currentWeight=3, targetWeight=3, goalModel=GoalModel(id=null, dateStart=null,"
                         + " dateStop=null, goalTypeEnum=null, distanceGoal=null, durationGoal=null, weightGoal=null, user=null)),"
-                        + " user=UserModel(id=1, username=janedoe, firstName=Jane, lastName=Doe, role=GUEST, email=jane.doe@example.org,"
+                        + " user=UserModel(id=1, username=janedoe, password=password, firstName=Jane, lastName=Doe, role=GUEST, email=jane.doe@example.org,"
                         + " createDate=1970-01-01T00:00, userImageUrl=https://example.org/example, goalModelList=[]))),"
-                        + " user=UserModel(id=1, username=janedoe, firstName=Jane, lastName=Doe, role=GUEST, email=jane.doe@example.org,"
+                        + " user=UserModel(id=1, username=janedoe, password=password, firstName=Jane, lastName=Doe, role=GUEST, email=jane.doe@example.org,"
                         + " createDate=1970-01-01T00:00, userImageUrl=https://example.org/example, goalModelList=[])))",
                 actualToStringResult);
         assertEquals(1L, actualDistance.longValue());
@@ -914,6 +934,7 @@ class DistanceGoalModelDiffblueTest {
         user.setRole(RoleEnum.GUEST);
         user.setUserImageUrl("https://example.org/example");
         user.setUsername("janedoe");
+        user.setPassword("password");
 
         WeightGoalModel weightGoal = new WeightGoalModel();
         weightGoal.setCurrentWeight(3);
@@ -955,6 +976,7 @@ class DistanceGoalModelDiffblueTest {
         user2.setRole(RoleEnum.GUEST);
         user2.setUserImageUrl("https://example.org/example");
         user2.setUsername("janedoe");
+        user2.setPassword("password");
 
         WeightGoalModel weightGoal2 = new WeightGoalModel();
         weightGoal2.setCurrentWeight(3);
@@ -986,6 +1008,7 @@ class DistanceGoalModelDiffblueTest {
         user3.setRole(RoleEnum.GUEST);
         user3.setUserImageUrl("https://example.org/example");
         user3.setUsername("janedoe");
+        user3.setPassword("password");
 
         DistanceGoalModel distanceGoal4 = new DistanceGoalModel();
         distanceGoal4.setDistance(1L);
@@ -1006,6 +1029,7 @@ class DistanceGoalModelDiffblueTest {
         user4.setRole(RoleEnum.GUEST);
         user4.setUserImageUrl("https://example.org/example");
         user4.setUsername("janedoe");
+        user4.setPassword("password");
 
         WeightGoalModel weightGoal3 = new WeightGoalModel();
         weightGoal3.setCurrentWeight(3);
@@ -1070,6 +1094,7 @@ class DistanceGoalModelDiffblueTest {
         user.setRole(RoleEnum.GUEST);
         user.setUserImageUrl("https://example.org/example");
         user.setUsername("janedoe");
+        user.setPassword("password");
 
         WeightGoalModel weightGoal = new WeightGoalModel();
         weightGoal.setCurrentWeight(3);
@@ -1111,6 +1136,7 @@ class DistanceGoalModelDiffblueTest {
         user2.setRole(RoleEnum.GUEST);
         user2.setUserImageUrl("https://example.org/example");
         user2.setUsername("janedoe");
+        user2.setPassword("password");
 
         WeightGoalModel weightGoal2 = new WeightGoalModel();
         weightGoal2.setCurrentWeight(3);
@@ -1142,6 +1168,7 @@ class DistanceGoalModelDiffblueTest {
         user3.setRole(RoleEnum.GUEST);
         user3.setUserImageUrl("https://example.org/example");
         user3.setUsername("janedoe");
+        user3.setPassword("password");
 
         DistanceGoalModel distanceGoal4 = new DistanceGoalModel();
         distanceGoal4.setDistance(1L);
@@ -1162,6 +1189,7 @@ class DistanceGoalModelDiffblueTest {
         user4.setRole(RoleEnum.GUEST);
         user4.setUserImageUrl("https://example.org/example");
         user4.setUsername("janedoe");
+        user4.setPassword("password");
 
         WeightGoalModel weightGoal3 = new WeightGoalModel();
         weightGoal3.setCurrentWeight(3);
@@ -1231,6 +1259,7 @@ class DistanceGoalModelDiffblueTest {
         user.setRole(RoleEnum.GUEST);
         user.setUserImageUrl("https://example.org/example");
         user.setUsername("janedoe");
+        user.setPassword("password");
 
         WeightGoalModel weightGoal = new WeightGoalModel();
         weightGoal.setCurrentWeight(3);
@@ -1272,6 +1301,7 @@ class DistanceGoalModelDiffblueTest {
         user2.setRole(RoleEnum.GUEST);
         user2.setUserImageUrl("https://example.org/example");
         user2.setUsername("janedoe");
+        user2.setPassword("password");
 
         WeightGoalModel weightGoal2 = new WeightGoalModel();
         weightGoal2.setCurrentWeight(3);
@@ -1303,6 +1333,7 @@ class DistanceGoalModelDiffblueTest {
         user3.setRole(RoleEnum.GUEST);
         user3.setUserImageUrl("https://example.org/example");
         user3.setUsername("janedoe");
+        user3.setPassword("password");
 
         DistanceGoalModel distanceGoal4 = new DistanceGoalModel();
         distanceGoal4.setDistance(1L);
@@ -1323,6 +1354,7 @@ class DistanceGoalModelDiffblueTest {
         user4.setRole(RoleEnum.GUEST);
         user4.setUserImageUrl("https://example.org/example");
         user4.setUsername("janedoe");
+        user4.setPassword("password");
 
         WeightGoalModel weightGoal3 = new WeightGoalModel();
         weightGoal3.setCurrentWeight(3);
@@ -1394,6 +1426,7 @@ class DistanceGoalModelDiffblueTest {
         user.setRole(RoleEnum.GUEST);
         user.setUserImageUrl("https://example.org/example");
         user.setUsername("janedoe");
+        user.setPassword("password");
 
         WeightGoalModel weightGoal = new WeightGoalModel();
         weightGoal.setCurrentWeight(3);
@@ -1435,6 +1468,7 @@ class DistanceGoalModelDiffblueTest {
         user2.setRole(RoleEnum.GUEST);
         user2.setUserImageUrl("https://example.org/example");
         user2.setUsername("janedoe");
+        user2.setPassword("password");
 
         WeightGoalModel weightGoal2 = new WeightGoalModel();
         weightGoal2.setCurrentWeight(3);
@@ -1466,6 +1500,7 @@ class DistanceGoalModelDiffblueTest {
         user3.setRole(RoleEnum.GUEST);
         user3.setUserImageUrl("https://example.org/example");
         user3.setUsername("janedoe");
+        user3.setPassword("password");
 
         DistanceGoalModel distanceGoal4 = new DistanceGoalModel();
         distanceGoal4.setDistance(1L);
@@ -1486,6 +1521,7 @@ class DistanceGoalModelDiffblueTest {
         user4.setRole(RoleEnum.GUEST);
         user4.setUserImageUrl("https://example.org/example");
         user4.setUsername("janedoe");
+        user4.setPassword("password");
 
         WeightGoalModel weightGoal3 = new WeightGoalModel();
         weightGoal3.setCurrentWeight(3);
@@ -1543,6 +1579,7 @@ class DistanceGoalModelDiffblueTest {
         user5.setRole(RoleEnum.GUEST);
         user5.setUserImageUrl("https://example.org/example");
         user5.setUsername("janedoe");
+        user5.setPassword("password");
 
         WeightGoalModel weightGoal5 = new WeightGoalModel();
         weightGoal5.setCurrentWeight(3);
@@ -1584,6 +1621,7 @@ class DistanceGoalModelDiffblueTest {
         user6.setRole(RoleEnum.GUEST);
         user6.setUserImageUrl("https://example.org/example");
         user6.setUsername("janedoe");
+        user6.setPassword("password");
 
         WeightGoalModel weightGoal6 = new WeightGoalModel();
         weightGoal6.setCurrentWeight(3);
@@ -1615,6 +1653,7 @@ class DistanceGoalModelDiffblueTest {
         user7.setRole(RoleEnum.GUEST);
         user7.setUserImageUrl("https://example.org/example");
         user7.setUsername("janedoe");
+        user7.setPassword("password");
 
         DistanceGoalModel distanceGoal8 = new DistanceGoalModel();
         distanceGoal8.setDistance(1L);
@@ -1635,6 +1674,7 @@ class DistanceGoalModelDiffblueTest {
         user8.setRole(RoleEnum.GUEST);
         user8.setUserImageUrl("https://example.org/example");
         user8.setUsername("janedoe");
+        user8.setPassword("password");
 
         WeightGoalModel weightGoal7 = new WeightGoalModel();
         weightGoal7.setCurrentWeight(3);
