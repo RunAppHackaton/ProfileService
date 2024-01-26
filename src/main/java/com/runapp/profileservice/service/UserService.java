@@ -6,6 +6,9 @@ import com.runapp.profileservice.dto.request.CreateWeightGoalRequest;
 import com.runapp.profileservice.model.*;
 import com.runapp.profileservice.repository.*;
 import com.runapp.profileservice.utill.GoalTypeEnum;
+import lombok.extern.java.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,7 @@ public class UserService {
     private final DurationGoalRepository durationGoalRepository;
     private final WeightGoalRepository weightGoalRepository;
     private final PasswordEncoder passwordEncoder;
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     public UserService(UserRepository userRepository, GoalRepository goalRepository, DistanceGoalRepository distanceGoalRepository, DurationGoalRepository durationGoalRepository, WeightGoalRepository weightGoalRepository, PasswordEncoder passwordEncoder) {
@@ -33,19 +37,23 @@ public class UserService {
     }
 
     public UserModel createUser(UserModel user) {
+        LOGGER.info("User add: {}", user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     public Optional<UserModel> getUserById(int userId) {
+        LOGGER.info("User get by id: {}", userId);
         return userRepository.findById(userId);
     }
 
     public List<UserModel> getAllUsers() {
+        LOGGER.info("User get all");
         return userRepository.findAll();
     }
 
     public UserModel updateUser(int userId, UserModel updatedUser) {
+        LOGGER.info("User update by id: userId={}, updatedUser={}", userId, updatedUser);
         if (userRepository.existsById(userId)) {
             updatedUser.setId(userId);
             if(updatedUser.getPassword()!=null){
@@ -58,6 +66,7 @@ public class UserService {
     }
 
     public void deleteUser(int userId) {
+        LOGGER.info("User delete by id: {}", userId);
         userRepository.deleteById(userId);
     }
 

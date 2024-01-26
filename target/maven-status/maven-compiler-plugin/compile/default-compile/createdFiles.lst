@@ -1,4 +1,5 @@
 com\runapp\profileservice\repository\WeightGoalRepository.class
+com\runapp\profileservice\config\SecurityConfig.class
 com\runapp\profileservice\feignClient\StorageServiceClient.class
 com\runapp\profileservice\model\DistanceGoalModel.class
 com\runapp\profileservice\repository\DistanceGoalRepository.class
