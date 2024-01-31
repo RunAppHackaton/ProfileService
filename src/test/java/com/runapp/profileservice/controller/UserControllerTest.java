@@ -2,26 +2,34 @@ package com.runapp.profileservice.controller;
 
 import com.runapp.profileservice.dto.request.UserRequest;
 import com.runapp.profileservice.dto.response.UserResponse;
+import com.runapp.profileservice.dto.userDtoMapper.UserDtoMapper;
+import com.runapp.profileservice.exceptions.GlobalExceptionHandler;
+import com.runapp.profileservice.feignClient.StorageServiceClient;
 import com.runapp.profileservice.model.UserModel;
 import com.runapp.profileservice.service.UserService;
-import com.runapp.profileservice.dto.userDtoMapper.UserDtoMapper;
-import com.runapp.profileservice.feignClient.StorageServiceClient;
 import com.runapp.profileservice.utill.RoleEnum;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
+import org.springframework.test.web.client.ResponseActions;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static jakarta.ws.rs.core.Response.status;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.when;
 
 class UserControllerTest {
 
@@ -37,9 +45,14 @@ class UserControllerTest {
     @InjectMocks
     private UserController userController;
 
+    private MockMvc mockMvc;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(userController)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
     }
 
     @Test
@@ -53,7 +66,7 @@ class UserControllerTest {
         when(userDtoMapper.toResponse(userModel)).thenReturn(userResponse);
 
         // Act
-        ResponseEntity<Object> response = userController.createUser(userRequest, mock(BindingResult.class));
+        ResponseEntity<Object> response = userController.createUser(userRequest);
 
         // Assert
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -78,17 +91,13 @@ class UserControllerTest {
     }
 
     @Test
-    void getUserById_NonExistingUserId_ReturnsNotFound() {
+    void getUserById_NonExistingUserId_ReturnsNotFound() throws Exception {
         // Arrange
         int userId = 1;
         when(userService.getUserById(userId)).thenReturn(Optional.empty());
-
         // Act
-        ResponseEntity<UserResponse> response = userController.getUserById(userId);
-
-        // Assert
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertNull(response.getBody());
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/users/1"));
+        resultActions.andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
 

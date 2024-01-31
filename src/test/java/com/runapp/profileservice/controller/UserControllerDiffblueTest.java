@@ -1,51 +1,24 @@
 package com.runapp.profileservice.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.runapp.profileservice.dto.request.CreateDistanceGoalRequest;
-import com.runapp.profileservice.dto.request.CreateDurationGoalRequest;
-import com.runapp.profileservice.dto.request.CreateWeightGoalRequest;
-import com.runapp.profileservice.dto.request.DeleteStorageRequest;
-import com.runapp.profileservice.dto.request.UserDeleteRequest;
-import com.runapp.profileservice.dto.request.UserRequest;
+import com.runapp.profileservice.dto.request.*;
 import com.runapp.profileservice.dto.response.UserResponse;
 import com.runapp.profileservice.dto.userDtoMapper.UserDtoMapper;
+import com.runapp.profileservice.exceptions.GlobalExceptionHandler;
 import com.runapp.profileservice.feignClient.StorageServiceClient;
-import com.runapp.profileservice.model.DistanceGoalModel;
-import com.runapp.profileservice.model.DurationGoalModel;
-import com.runapp.profileservice.model.GoalModel;
-import com.runapp.profileservice.model.UserModel;
-import com.runapp.profileservice.model.WeightGoalModel;
-import com.runapp.profileservice.repository.DistanceGoalRepository;
-import com.runapp.profileservice.repository.DurationGoalRepository;
-import com.runapp.profileservice.repository.GoalRepository;
-import com.runapp.profileservice.repository.UserRepository;
-import com.runapp.profileservice.repository.WeightGoalRepository;
+import com.runapp.profileservice.model.*;
+import com.runapp.profileservice.repository.*;
 import com.runapp.profileservice.service.UserService;
 import com.runapp.profileservice.utill.GoalTypeEnum;
 import com.runapp.profileservice.utill.RoleEnum;
 import feign.FeignException;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Optional;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -53,18 +26,27 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Optional;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 @ContextConfiguration(classes = {UserController.class})
+@WebMvcTest(UserController.class)
 @ExtendWith(SpringExtension.class)
 class UserControllerDiffblueTest {
     @MockBean
@@ -82,30 +64,19 @@ class UserControllerDiffblueTest {
     @MockBean
     private PasswordEncoder passwordEncoder;
 
-    /**
-     * Method under test:
-     * {@link UserController#createUser(UserRequest, BindingResult)}
-     */
+    @Autowired
+    private ObjectMapper objectMapper;
+    private MockMvc mockMvc;
+    @MockBean
+    private UserRepository userRepository;
+    @BeforeEach
+    void setup(){
+        mockMvc = MockMvcBuilders.standaloneSetup(userController)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
+    }
     @Test
     void testCreateUser() {
-        //   Diffblue Cover was unable to write a Spring test,
-        //   so wrote a non-Spring test instead.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Java 8 date/time type `java.time.LocalDateTime` not supported by default: add Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" to enable handling (through reference chain: com.runapp.profileservice.dto.request.UserRequest["createDate"])
-        //       at com.fasterxml.jackson.databind.exc.InvalidDefinitionException.from(InvalidDefinitionException.java:77)
-        //       at com.fasterxml.jackson.databind.SerializerProvider.reportBadDefinition(SerializerProvider.java:1308)
-        //       at com.fasterxml.jackson.databind.ser.impl.UnsupportedTypeSerializer.serialize(UnsupportedTypeSerializer.java:35)
-        //       at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:732)
-        //       at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:772)
-        //       at com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:178)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:479)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:318)
-        //       at com.fasterxml.jackson.databind.ObjectMapper._writeValueAndClose(ObjectMapper.java:4719)
-        //       at com.fasterxml.jackson.databind.ObjectMapper.writeValueAsString(ObjectMapper.java:3964)
-        //   See https://diff.blue/R013 to resolve this issue.
-
         UserModel userModel = new UserModel();
         userModel.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
         userModel.setEmail("jane.doe@example.org");
@@ -123,8 +94,7 @@ class UserControllerDiffblueTest {
 
         UserController userController = new UserController(userService, new UserDtoMapper(), storageServiceClient);
         UserRequest userRequest = new UserRequest();
-        ResponseEntity<Object> actualCreateUserResult = userController.createUser(userRequest,
-                new BindException("Target", "Object Name"));
+        ResponseEntity<Object> actualCreateUserResult = userController.createUser(userRequest);
         verify(userRepository).save(Mockito.<UserModel>any());
         assertTrue(((UserResponse) actualCreateUserResult.getBody()).getRole() instanceof RoleEnum);
         assertEquals("00:00", ((UserResponse) actualCreateUserResult.getBody()).getCreateDate().toLocalTime().toString());
@@ -177,8 +147,7 @@ class UserControllerDiffblueTest {
         when(userService.createUser(Mockito.<UserModel>any())).thenReturn(userModel);
         UserController userController = new UserController(userService, new UserDtoMapper(), storageServiceClient);
         UserRequest userRequest = new UserRequest();
-        ResponseEntity<Object> actualCreateUserResult = userController.createUser(userRequest,
-                new BindException("Target", "Object Name"));
+        ResponseEntity<Object> actualCreateUserResult = userController.createUser(userRequest);
         verify(userService).createUser(Mockito.<UserModel>any());
         assertTrue(((UserResponse) actualCreateUserResult.getBody()).getRole() instanceof RoleEnum);
         assertEquals("00:00", ((UserResponse) actualCreateUserResult.getBody()).getCreateDate().toLocalTime().toString());
@@ -245,8 +214,7 @@ class UserControllerDiffblueTest {
         when(userDtoMapper.toModel(Mockito.<UserRequest>any())).thenReturn(userModel2);
         UserController userController = new UserController(userService, userDtoMapper, storageServiceClient);
         UserRequest userRequest = new UserRequest();
-        ResponseEntity<Object> actualCreateUserResult = userController.createUser(userRequest,
-                new BindException("Target", "Object Name"));
+        ResponseEntity<Object> actualCreateUserResult = userController.createUser(userRequest);
         verify(userDtoMapper).toModel(Mockito.<UserRequest>any());
         verify(userDtoMapper).toResponse(Mockito.<UserModel>any());
         verify(userService).createUser(Mockito.<UserModel>any());
@@ -254,83 +222,30 @@ class UserControllerDiffblueTest {
         assertTrue(actualCreateUserResult.hasBody());
         assertTrue(actualCreateUserResult.getHeaders().isEmpty());
     }
-
     /**
      * Method under test:
      * {@link UserController#createUser(UserRequest, BindingResult)}
      */
     @Test
-    void testCreateUser4() {
-        //   Diffblue Cover was unable to write a Spring test,
-        //   so wrote a non-Spring test instead.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Java 8 date/time type `java.time.LocalDateTime` not supported by default: add Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" to enable handling (through reference chain: com.runapp.profileservice.dto.request.UserRequest["createDate"])
-        //       at com.fasterxml.jackson.databind.exc.InvalidDefinitionException.from(InvalidDefinitionException.java:77)
-        //       at com.fasterxml.jackson.databind.SerializerProvider.reportBadDefinition(SerializerProvider.java:1308)
-        //       at com.fasterxml.jackson.databind.ser.impl.UnsupportedTypeSerializer.serialize(UnsupportedTypeSerializer.java:35)
-        //       at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:732)
-        //       at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:772)
-        //       at com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:178)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:479)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:318)
-        //       at com.fasterxml.jackson.databind.ObjectMapper._writeValueAndClose(ObjectMapper.java:4719)
-        //       at com.fasterxml.jackson.databind.ObjectMapper.writeValueAsString(ObjectMapper.java:3964)
-        //   See https://diff.blue/R013 to resolve this issue.
-
-        UserController userController = new UserController(mock(UserService.class), mock(UserDtoMapper.class), storageServiceClient);
-        UserRequest userRequest = new UserRequest();
-        BeanPropertyBindingResult bindingResult = mock(BeanPropertyBindingResult.class);
-        when(bindingResult.getFieldErrors()).thenReturn(new ArrayList<>());
-        when(bindingResult.hasErrors()).thenReturn(true);
-        ResponseEntity<Object> actualCreateUserResult = userController.createUser(userRequest, bindingResult);
-        verify(bindingResult).getFieldErrors();
-        verify(bindingResult).hasErrors();
-        assertEquals(400, actualCreateUserResult.getStatusCodeValue());
-        assertTrue(((Map<Object, Object>) actualCreateUserResult.getBody()).isEmpty());
-        assertTrue(actualCreateUserResult.getHeaders().isEmpty());
-    }
-
-    /**
-     * Method under test:
-     * {@link UserController#createUser(UserRequest, BindingResult)}
-     */
-    @Test
-    void testCreateUser5() {
-        //   Diffblue Cover was unable to write a Spring test,
-        //   so wrote a non-Spring test instead.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Java 8 date/time type `java.time.LocalDateTime` not supported by default: add Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" to enable handling (through reference chain: com.runapp.profileservice.dto.request.UserRequest["createDate"])
-        //       at com.fasterxml.jackson.databind.exc.InvalidDefinitionException.from(InvalidDefinitionException.java:77)
-        //       at com.fasterxml.jackson.databind.SerializerProvider.reportBadDefinition(SerializerProvider.java:1308)
-        //       at com.fasterxml.jackson.databind.ser.impl.UnsupportedTypeSerializer.serialize(UnsupportedTypeSerializer.java:35)
-        //       at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:732)
-        //       at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:772)
-        //       at com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:178)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:479)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:318)
-        //       at com.fasterxml.jackson.databind.ObjectMapper._writeValueAndClose(ObjectMapper.java:4719)
-        //       at com.fasterxml.jackson.databind.ObjectMapper.writeValueAsString(ObjectMapper.java:3964)
-        //   See https://diff.blue/R013 to resolve this issue.
+    void testCreateUser4() throws Exception {
 
         UserController userController = new UserController(mock(UserService.class), mock(UserDtoMapper.class), storageServiceClient);
         UserRequest userRequest = new UserRequest();
 
-        ArrayList<FieldError> fieldErrorList = new ArrayList<>();
-        fieldErrorList.add(new FieldError("Object Name", "Field", "Default Message"));
-        BeanPropertyBindingResult bindingResult = mock(BeanPropertyBindingResult.class);
-        when(bindingResult.getFieldErrors()).thenReturn(fieldErrorList);
-        when(bindingResult.hasErrors()).thenReturn(true);
-        ResponseEntity<Object> actualCreateUserResult = userController.createUser(userRequest, bindingResult);
-        verify(bindingResult).getFieldErrors();
-        verify(bindingResult).hasErrors();
-        assertEquals(1, ((Map<String, String>) actualCreateUserResult.getBody()).size());
-        assertEquals(400, actualCreateUserResult.getStatusCodeValue());
-        assertTrue(actualCreateUserResult.hasBody());
-        assertTrue(actualCreateUserResult.getHeaders().isEmpty());
+        userRequest.setUsername("");
+        userRequest.setPassword("password123");
+        userRequest.setFirstName("Aaaaaaaaaa");
+        userRequest.setLastName("Bbbbbbbbb");
+        userRequest.setEmail("invalid@gmail.com");
+        userRequest.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
+
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(userController)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
+        // Perform the request and assert the response
+        mockMvc.perform(post("/users/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
     }
 
     /**
@@ -355,9 +270,9 @@ class UserControllerDiffblueTest {
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content()
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(content()
                         .string(
                                 "{\"id\":0,\"username\":null,\"password\":null,\"firstName\":null,\"lastName\":null,\"role\":null,\"email\":null,\"createDate\":null,"
                                         + "\"userImageUrl\":null}"));
@@ -374,8 +289,8 @@ class UserControllerDiffblueTest {
         when(feignException.getCause()).thenReturn(new Throwable());
         when(userDtoMapper.toResponse(Mockito.<UserModel>any())).thenThrow(feignException);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/users/{userId}", 1);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(userController).build().perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound());
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(userController).setControllerAdvice(new GlobalExceptionHandler()).build().perform(requestBuilder);
+        actualPerformResult.andExpect(status().isNotFound());
     }
 
     /**
@@ -388,301 +303,91 @@ class UserControllerDiffblueTest {
         MockMvcBuilders.standaloneSetup(userController)
                 .build()
                 .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content().string("[]"));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(content().string("[]"));
     }
 
-    /**
-     * Method under test:
-     * {@link UserController#updateUser(int, UserRequest, BindingResult)}
-     */
     @Test
-    void testUpdateUser() {
-        //   Diffblue Cover was unable to write a Spring test,
-        //   so wrote a non-Spring test instead.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Java 8 date/time type `java.time.LocalDateTime` not supported by default: add Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" to enable handling (through reference chain: com.runapp.profileservice.dto.request.UserRequest["createDate"])
-        //       at com.fasterxml.jackson.databind.exc.InvalidDefinitionException.from(InvalidDefinitionException.java:77)
-        //       at com.fasterxml.jackson.databind.SerializerProvider.reportBadDefinition(SerializerProvider.java:1308)
-        //       at com.fasterxml.jackson.databind.ser.impl.UnsupportedTypeSerializer.serialize(UnsupportedTypeSerializer.java:35)
-        //       at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:732)
-        //       at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:772)
-        //       at com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:178)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:479)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:318)
-        //       at com.fasterxml.jackson.databind.ObjectMapper._writeValueAndClose(ObjectMapper.java:4719)
-        //       at com.fasterxml.jackson.databind.ObjectMapper.writeValueAsString(ObjectMapper.java:3964)
-        //   See https://diff.blue/R013 to resolve this issue.
+    public void testUpdateUser_ValidRequest() throws Exception {
+        int userId = 1;
 
-        UserModel userModel = new UserModel();
-        userModel.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        userModel.setEmail("jane.doe@example.org");
-        userModel.setFirstName("Jane");
-        userModel.setGoalModelList(new ArrayList<>());
-        userModel.setId(1);
-        userModel.setLastName("Doe");
-        userModel.setRole(RoleEnum.GUEST);
-        userModel.setUserImageUrl("https://example.org/example");
-        userModel.setUsername("janedoe");
-        UserRepository userRepository = mock(UserRepository.class);
-        when(userRepository.save(Mockito.<UserModel>any())).thenReturn(userModel);
-        when(userRepository.existsById(Mockito.<Integer>any())).thenReturn(true);
-        UserService userService = new UserService(userRepository, mock(GoalRepository.class),
-                mock(DistanceGoalRepository.class), mock(DurationGoalRepository.class), mock(WeightGoalRepository.class), passwordEncoder);
+        // Mock the behavior of userService.updateUser
+        UserModel updatedUser = new UserModel();
+        updatedUser.setUsername("John Doe");
+        updatedUser.setPassword("password123");
+        updatedUser.setFirstName("Aaaaaaaaaa");
+        updatedUser.setLastName("Bbbbbbbbb");
+        updatedUser.setEmail("invalid@gmail.com");
+        updatedUser.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
+        Mockito.when(userService.updateUser(userId, userDtoMapper.toModel(Mockito.any(UserRequest.class))))
+                .thenReturn(updatedUser);
 
-        UserController userController = new UserController(userService, new UserDtoMapper(), storageServiceClient);
         UserRequest userRequest = new UserRequest();
-        ResponseEntity<Object> actualUpdateUserResult = userController.updateUser(1, userRequest,
-                new BindException("Target", "Object Name"));
-        verify(userRepository).existsById(Mockito.<Integer>any());
-        verify(userRepository).save(Mockito.<UserModel>any());
-        assertTrue(((UserResponse) actualUpdateUserResult.getBody()).getRole() instanceof RoleEnum);
-        assertEquals("00:00", ((UserResponse) actualUpdateUserResult.getBody()).getCreateDate().toLocalTime().toString());
-        assertEquals("Doe", ((UserResponse) actualUpdateUserResult.getBody()).getLastName());
-        assertEquals("Jane", ((UserResponse) actualUpdateUserResult.getBody()).getFirstName());
-        assertEquals("https://example.org/example", ((UserResponse) actualUpdateUserResult.getBody()).getUserImageUrl());
-        assertEquals("jane.doe@example.org", ((UserResponse) actualUpdateUserResult.getBody()).getEmail());
-        assertEquals("janedoe", ((UserResponse) actualUpdateUserResult.getBody()).getUsername());
-        assertEquals(1, ((UserResponse) actualUpdateUserResult.getBody()).getId());
-        assertEquals(200, actualUpdateUserResult.getStatusCodeValue());
-        assertTrue(actualUpdateUserResult.hasBody());
-        assertTrue(actualUpdateUserResult.getHeaders().isEmpty());
+        userRequest.setUsername("John Doe");
+        userRequest.setPassword("password123");
+        userRequest.setFirstName("Aaaaaaaaaa");
+        userRequest.setLastName("Bbbbbbbbb");
+        userRequest.setEmail("invalid@gmail.com");
+        // Populate other fields as needed
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(userController)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
+        // Perform the request and assert the response
+        mockMvc.perform(put("/users/{userId}", userId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(userRequest)))
+                .andExpect(status().isOk());
     }
 
-    /**
-     * Method under test:
-     * {@link UserController#updateUser(int, UserRequest, BindingResult)}
-     */
     @Test
-    void testUpdateUser2() {
-        //   Diffblue Cover was unable to write a Spring test,
-        //   so wrote a non-Spring test instead.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Java 8 date/time type `java.time.LocalDateTime` not supported by default: add Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" to enable handling (through reference chain: com.runapp.profileservice.dto.request.UserRequest["createDate"])
-        //       at com.fasterxml.jackson.databind.exc.InvalidDefinitionException.from(InvalidDefinitionException.java:77)
-        //       at com.fasterxml.jackson.databind.SerializerProvider.reportBadDefinition(SerializerProvider.java:1308)
-        //       at com.fasterxml.jackson.databind.ser.impl.UnsupportedTypeSerializer.serialize(UnsupportedTypeSerializer.java:35)
-        //       at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:732)
-        //       at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:772)
-        //       at com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:178)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:479)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:318)
-        //       at com.fasterxml.jackson.databind.ObjectMapper._writeValueAndClose(ObjectMapper.java:4719)
-        //       at com.fasterxml.jackson.databind.ObjectMapper.writeValueAsString(ObjectMapper.java:3964)
-        //   See https://diff.blue/R013 to resolve this issue.
+    public void testUpdateUser_UserNotFound() throws Exception {
+        int userId = 1;
 
-        UserRepository userRepository = mock(UserRepository.class);
-        when(userRepository.existsById(Mockito.<Integer>any())).thenReturn(false);
-        UserService userService = new UserService(userRepository, mock(GoalRepository.class),
-                mock(DistanceGoalRepository.class), mock(DurationGoalRepository.class), mock(WeightGoalRepository.class), passwordEncoder);
+        // Mock the behavior of userService.updateUser when the user is not found
+        Mockito.when(userService.updateUser(userId, userDtoMapper.toModel(Mockito.any(UserRequest.class))))
+                .thenReturn(null);
 
-        UserController userController = new UserController(userService, new UserDtoMapper(), storageServiceClient);
+        // Prepare a valid UserRequest
         UserRequest userRequest = new UserRequest();
-        ResponseEntity<Object> actualUpdateUserResult = userController.updateUser(1, userRequest,
-                new BindException("Target", "Object Name"));
-        verify(userRepository).existsById(Mockito.<Integer>any());
-        assertNull(actualUpdateUserResult.getBody());
-        assertEquals(404, actualUpdateUserResult.getStatusCodeValue());
-        assertTrue(actualUpdateUserResult.getHeaders().isEmpty());
+        userRequest.setUsername("John Doe");
+        userRequest.setPassword("password123");
+        userRequest.setFirstName("Aaaaaaaaaa");
+        userRequest.setLastName("Bbbbbbbbb");
+        userRequest.setEmail("invalid@gmail.com");
+        userRequest.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
+
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(userController)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
+        // Perform the request and assert the response
+        mockMvc.perform(put("/users/{userId}", userId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(userRequest)))
+                .andExpect(status().isNotFound());
     }
 
-    /**
-     * Method under test:
-     * {@link UserController#updateUser(int, UserRequest, BindingResult)}
-     */
     @Test
-    void testUpdateUser3() {
-        //   Diffblue Cover was unable to write a Spring test,
-        //   so wrote a non-Spring test instead.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Java 8 date/time type `java.time.LocalDateTime` not supported by default: add Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" to enable handling (through reference chain: com.runapp.profileservice.dto.request.UserRequest["createDate"])
-        //       at com.fasterxml.jackson.databind.exc.InvalidDefinitionException.from(InvalidDefinitionException.java:77)
-        //       at com.fasterxml.jackson.databind.SerializerProvider.reportBadDefinition(SerializerProvider.java:1308)
-        //       at com.fasterxml.jackson.databind.ser.impl.UnsupportedTypeSerializer.serialize(UnsupportedTypeSerializer.java:35)
-        //       at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:732)
-        //       at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:772)
-        //       at com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:178)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:479)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:318)
-        //       at com.fasterxml.jackson.databind.ObjectMapper._writeValueAndClose(ObjectMapper.java:4719)
-        //       at com.fasterxml.jackson.databind.ObjectMapper.writeValueAsString(ObjectMapper.java:3964)
-        //   See https://diff.blue/R013 to resolve this issue.
+    public void testUpdateUser_InvalidRequest() throws Exception {
+        int userId = 1;
+        UserRequest invalidUserRequest = new UserRequest();
+        invalidUserRequest.setUsername("1");
+        invalidUserRequest.setPassword("password123");
+        invalidUserRequest.setFirstName("John");
+        invalidUserRequest.setLastName("Doe");
+        invalidUserRequest.setEmail("johndoe@gmail.com");
+        invalidUserRequest.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
 
-        UserModel userModel = new UserModel();
-        userModel.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        userModel.setEmail("jane.doe@example.org");
-        userModel.setFirstName("Jane");
-        userModel.setGoalModelList(new ArrayList<>());
-        userModel.setId(1);
-        userModel.setLastName("Doe");
-        userModel.setRole(RoleEnum.GUEST);
-        userModel.setUserImageUrl("https://example.org/example");
-        userModel.setUsername("janedoe");
-        UserService userService = mock(UserService.class);
-        when(userService.updateUser(anyInt(), Mockito.<UserModel>any())).thenReturn(userModel);
-        UserController userController = new UserController(userService, new UserDtoMapper(), storageServiceClient);
-        UserRequest userRequest = new UserRequest();
-        ResponseEntity<Object> actualUpdateUserResult = userController.updateUser(1, userRequest,
-                new BindException("Target", "Object Name"));
-        verify(userService).updateUser(anyInt(), Mockito.<UserModel>any());
-        assertTrue(((UserResponse) actualUpdateUserResult.getBody()).getRole() instanceof RoleEnum);
-        assertEquals("00:00", ((UserResponse) actualUpdateUserResult.getBody()).getCreateDate().toLocalTime().toString());
-        assertEquals("Doe", ((UserResponse) actualUpdateUserResult.getBody()).getLastName());
-        assertEquals("Jane", ((UserResponse) actualUpdateUserResult.getBody()).getFirstName());
-        assertEquals("https://example.org/example", ((UserResponse) actualUpdateUserResult.getBody()).getUserImageUrl());
-        assertEquals("jane.doe@example.org", ((UserResponse) actualUpdateUserResult.getBody()).getEmail());
-        assertEquals("janedoe", ((UserResponse) actualUpdateUserResult.getBody()).getUsername());
-        assertEquals(1, ((UserResponse) actualUpdateUserResult.getBody()).getId());
-        assertEquals(200, actualUpdateUserResult.getStatusCodeValue());
-        assertTrue(actualUpdateUserResult.hasBody());
-        assertTrue(actualUpdateUserResult.getHeaders().isEmpty());
-    }
-
-    /**
-     * Method under test:
-     * {@link UserController#updateUser(int, UserRequest, BindingResult)}
-     */
-    @Test
-    void testUpdateUser4() {
-        //   Diffblue Cover was unable to write a Spring test,
-        //   so wrote a non-Spring test instead.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Java 8 date/time type `java.time.LocalDateTime` not supported by default: add Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" to enable handling (through reference chain: com.runapp.profileservice.dto.request.UserRequest["createDate"])
-        //       at com.fasterxml.jackson.databind.exc.InvalidDefinitionException.from(InvalidDefinitionException.java:77)
-        //       at com.fasterxml.jackson.databind.SerializerProvider.reportBadDefinition(SerializerProvider.java:1308)
-        //       at com.fasterxml.jackson.databind.ser.impl.UnsupportedTypeSerializer.serialize(UnsupportedTypeSerializer.java:35)
-        //       at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:732)
-        //       at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:772)
-        //       at com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:178)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:479)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:318)
-        //       at com.fasterxml.jackson.databind.ObjectMapper._writeValueAndClose(ObjectMapper.java:4719)
-        //       at com.fasterxml.jackson.databind.ObjectMapper.writeValueAsString(ObjectMapper.java:3964)
-        //   See https://diff.blue/R013 to resolve this issue.
-
-        UserModel userModel = new UserModel();
-        userModel.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        userModel.setEmail("jane.doe@example.org");
-        userModel.setFirstName("Jane");
-        userModel.setGoalModelList(new ArrayList<>());
-        userModel.setId(1);
-        userModel.setLastName("Doe");
-        userModel.setRole(RoleEnum.GUEST);
-        userModel.setUserImageUrl("https://example.org/example");
-        userModel.setUsername("janedoe");
-        UserService userService = mock(UserService.class);
-        when(userService.updateUser(anyInt(), Mockito.<UserModel>any())).thenReturn(userModel);
-
-        UserModel userModel2 = new UserModel();
-        userModel2.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        userModel2.setEmail("jane.doe@example.org");
-        userModel2.setFirstName("Jane");
-        userModel2.setGoalModelList(new ArrayList<>());
-        userModel2.setId(1);
-        userModel2.setLastName("Doe");
-        userModel2.setRole(RoleEnum.GUEST);
-        userModel2.setUserImageUrl("https://example.org/example");
-        userModel2.setUsername("janedoe");
-        UserDtoMapper userDtoMapper = mock(UserDtoMapper.class);
-        when(userDtoMapper.toResponse(Mockito.<UserModel>any())).thenReturn(new UserResponse());
-        when(userDtoMapper.toModel(Mockito.<UserRequest>any())).thenReturn(userModel2);
-        UserController userController = new UserController(userService, userDtoMapper, storageServiceClient);
-        UserRequest userRequest = new UserRequest();
-        ResponseEntity<Object> actualUpdateUserResult = userController.updateUser(1, userRequest,
-                new BindException("Target", "Object Name"));
-        verify(userDtoMapper).toModel(Mockito.<UserRequest>any());
-        verify(userDtoMapper).toResponse(Mockito.<UserModel>any());
-        verify(userService).updateUser(anyInt(), Mockito.<UserModel>any());
-        assertEquals(200, actualUpdateUserResult.getStatusCodeValue());
-        assertTrue(actualUpdateUserResult.hasBody());
-        assertTrue(actualUpdateUserResult.getHeaders().isEmpty());
-    }
-
-    /**
-     * Method under test:
-     * {@link UserController#updateUser(int, UserRequest, BindingResult)}
-     */
-    @Test
-    void testUpdateUser5() {
-        //   Diffblue Cover was unable to write a Spring test,
-        //   so wrote a non-Spring test instead.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Java 8 date/time type `java.time.LocalDateTime` not supported by default: add Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" to enable handling (through reference chain: com.runapp.profileservice.dto.request.UserRequest["createDate"])
-        //       at com.fasterxml.jackson.databind.exc.InvalidDefinitionException.from(InvalidDefinitionException.java:77)
-        //       at com.fasterxml.jackson.databind.SerializerProvider.reportBadDefinition(SerializerProvider.java:1308)
-        //       at com.fasterxml.jackson.databind.ser.impl.UnsupportedTypeSerializer.serialize(UnsupportedTypeSerializer.java:35)
-        //       at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:732)
-        //       at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:772)
-        //       at com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:178)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:479)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:318)
-        //       at com.fasterxml.jackson.databind.ObjectMapper._writeValueAndClose(ObjectMapper.java:4719)
-        //       at com.fasterxml.jackson.databind.ObjectMapper.writeValueAsString(ObjectMapper.java:3964)
-        //   See https://diff.blue/R013 to resolve this issue.
-
-        UserController userController = new UserController(mock(UserService.class), mock(UserDtoMapper.class), storageServiceClient);
-        UserRequest userRequest = new UserRequest();
-        BeanPropertyBindingResult bindingResult = mock(BeanPropertyBindingResult.class);
-        when(bindingResult.getFieldErrors()).thenReturn(new ArrayList<>());
-        when(bindingResult.hasErrors()).thenReturn(true);
-        ResponseEntity<Object> actualUpdateUserResult = userController.updateUser(1, userRequest, bindingResult);
-        verify(bindingResult).getFieldErrors();
-        verify(bindingResult).hasErrors();
-        assertEquals(400, actualUpdateUserResult.getStatusCodeValue());
-        assertTrue(((Map<Object, Object>) actualUpdateUserResult.getBody()).isEmpty());
-        assertTrue(actualUpdateUserResult.getHeaders().isEmpty());
-    }
-
-    /**
-     * Method under test:
-     * {@link UserController#updateUser(int, UserRequest, BindingResult)}
-     */
-    @Test
-    void testUpdateUser6() {
-        //   Diffblue Cover was unable to write a Spring test,
-        //   so wrote a non-Spring test instead.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Java 8 date/time type `java.time.LocalDateTime` not supported by default: add Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" to enable handling (through reference chain: com.runapp.profileservice.dto.request.UserRequest["createDate"])
-        //       at com.fasterxml.jackson.databind.exc.InvalidDefinitionException.from(InvalidDefinitionException.java:77)
-        //       at com.fasterxml.jackson.databind.SerializerProvider.reportBadDefinition(SerializerProvider.java:1308)
-        //       at com.fasterxml.jackson.databind.ser.impl.UnsupportedTypeSerializer.serialize(UnsupportedTypeSerializer.java:35)
-        //       at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:732)
-        //       at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:772)
-        //       at com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:178)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:479)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:318)
-        //       at com.fasterxml.jackson.databind.ObjectMapper._writeValueAndClose(ObjectMapper.java:4719)
-        //       at com.fasterxml.jackson.databind.ObjectMapper.writeValueAsString(ObjectMapper.java:3964)
-        //   See https://diff.blue/R013 to resolve this issue.
-
-        UserController userController = new UserController(mock(UserService.class), mock(UserDtoMapper.class), storageServiceClient);
-        UserRequest userRequest = new UserRequest();
-
-        ArrayList<FieldError> fieldErrorList = new ArrayList<>();
-        fieldErrorList.add(new FieldError("Object Name", "Field", "Default Message"));
-        BeanPropertyBindingResult bindingResult = mock(BeanPropertyBindingResult.class);
-        when(bindingResult.getFieldErrors()).thenReturn(fieldErrorList);
-        when(bindingResult.hasErrors()).thenReturn(true);
-        ResponseEntity<Object> actualUpdateUserResult = userController.updateUser(1, userRequest, bindingResult);
-        verify(bindingResult).getFieldErrors();
-        verify(bindingResult).hasErrors();
-        assertEquals(1, ((Map<String, String>) actualUpdateUserResult.getBody()).size());
-        assertEquals(400, actualUpdateUserResult.getStatusCodeValue());
-        assertTrue(actualUpdateUserResult.hasBody());
-        assertTrue(actualUpdateUserResult.getHeaders().isEmpty());
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(userController)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
+        // Perform the request and assert the response
+        mockMvc.perform(put("/users/{userId}", userId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidUserRequest)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].defaultMessage", containsString("The 'username' length must be between 3 and 15 characters.")));
     }
 
     /**
@@ -705,7 +410,7 @@ class UserControllerDiffblueTest {
         when(userService.getUserById(anyInt())).thenReturn(ofResult);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/users/{userId}", 1);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(userController).build().perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().isNoContent());
+        actualPerformResult.andExpect(status().isNoContent());
     }
 
     /**
@@ -718,42 +423,28 @@ class UserControllerDiffblueTest {
         doThrow(feignException).when(userService).deleteUser(anyInt());
         Optional<UserModel> emptyResult = Optional.empty();
         when(userService.getUserById(anyInt())).thenReturn(emptyResult);
+
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/users/{userId}", 1);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(userController).build().perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound());
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(userController)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(status().isNotFound());
     }
 
     /**
      * Method under test: {@link UserController#uploadImage(MultipartFile, int)}
      */
     @Test
-    void testUploadImage() throws IOException {
-        //   Diffblue Cover was unable to write a Spring test,
-        //   so wrote a non-Spring test instead.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   jakarta.servlet.ServletException: Request processing failed: org.springframework.web.multipart.MultipartException: Current request is not a multipart request
-        //       at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
-        //       at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
-        //   org.springframework.web.multipart.MultipartException: Current request is not a multipart request
-        //       at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
-        //       at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
-        //   See https://diff.blue/R013 to resolve this issue.
-
-        UserRepository userRepository = mock(UserRepository.class);
-        Optional<UserModel> emptyResult = Optional.empty();
-        when(userRepository.findById(Mockito.<Integer>any())).thenReturn(emptyResult);
-        UserService userService = new UserService(userRepository, mock(GoalRepository.class),
-                mock(DistanceGoalRepository.class), mock(DurationGoalRepository.class), mock(WeightGoalRepository.class), passwordEncoder);
-
-        UserController userController = new UserController(userService, new UserDtoMapper(), storageServiceClient);
-        ResponseEntity<Object> actualUploadImageResult = userController
-                .uploadImage(new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))), 1);
-        verify(userRepository).findById(Mockito.<Integer>any());
-        assertEquals("User with id 1 not found", actualUploadImageResult.getBody());
-        assertEquals(404, actualUploadImageResult.getStatusCodeValue());
-        assertTrue(actualUploadImageResult.getHeaders().isEmpty());
+    void testUploadImage() throws Exception {
+        // Mock the behavior when findById is called
+        when(userRepository.findById(any())).thenReturn(Optional.empty());
+        // Perform the request
+        mockMvc.perform(multipart("/users/{userId}/upload-image", 1)
+                        .file(new MockMultipartFile("file", "Name", "text/plain", "AXAXAXAX".getBytes())))
+                .andExpect(status().isNotFound());
+        // Ensure that save is not called
+        verify(userRepository, never()).save(any(UserModel.class));
     }
 
     /**
@@ -762,24 +453,6 @@ class UserControllerDiffblueTest {
      */
     @Test
     void testAddDistanceGoalToUser() {
-        //   Diffblue Cover was unable to write a Spring test,
-        //   so wrote a non-Spring test instead.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Java 8 date/time type `java.time.LocalDateTime` not supported by default: add Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" to enable handling (through reference chain: com.runapp.profileservice.dto.request.CreateDistanceGoalRequest["dateStart"])
-        //       at com.fasterxml.jackson.databind.exc.InvalidDefinitionException.from(InvalidDefinitionException.java:77)
-        //       at com.fasterxml.jackson.databind.SerializerProvider.reportBadDefinition(SerializerProvider.java:1308)
-        //       at com.fasterxml.jackson.databind.ser.impl.UnsupportedTypeSerializer.serialize(UnsupportedTypeSerializer.java:35)
-        //       at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:732)
-        //       at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:772)
-        //       at com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:178)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:479)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:318)
-        //       at com.fasterxml.jackson.databind.ObjectMapper._writeValueAndClose(ObjectMapper.java:4719)
-        //       at com.fasterxml.jackson.databind.ObjectMapper.writeValueAsString(ObjectMapper.java:3964)
-        //   See https://diff.blue/R013 to resolve this issue.
-
         UserModel userModel = new UserModel();
         userModel.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
         userModel.setEmail("jane.doe@example.org");
@@ -2091,9 +1764,9 @@ class UserControllerDiffblueTest {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/users/delete-image")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(userController).build().perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound())
-                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
-                .andExpect(MockMvcResultMatchers.content().string("User with id 1 not found"));
+        ResultActions actualPerformResult = mockMvc.perform(requestBuilder);
+        actualPerformResult.andExpect(status().isNotFound())
+                .andExpect(content().contentType("text/plain;charset=ISO-8859-1"))
+                .andExpect(content().string("User with id 1 not found"));
     }
 }

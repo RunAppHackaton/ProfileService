@@ -9,6 +9,7 @@ D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\main\java\com
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\main\java\com\runapp\profileservice\repository\UserRepository.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\main\java\com\runapp\profileservice\utill\RoleEnum.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\main\java\com\runapp\profileservice\feignClient\StorageServiceClient.java
+D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\main\java\com\runapp\profileservice\exceptions\GlobalExceptionHandler.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\main\java\com\runapp\profileservice\dto\request\DeleteStorageRequest.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\main\java\com\runapp\profileservice\service\UserService.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\main\java\com\runapp\profileservice\dto\response\StorageServiceResponse.java
@@ -17,6 +18,7 @@ D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\main\java\com
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\main\java\com\runapp\profileservice\model\DistanceGoalModel.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\main\java\com\runapp\profileservice\ProfileServiceApplication.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\main\java\com\runapp\profileservice\dto\request\CreateWeightGoalRequest.java
+D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\main\java\com\runapp\profileservice\exceptions\EntityNotFoundException.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\main\java\com\runapp\profileservice\config\SecurityConfig.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\main\java\com\runapp\profileservice\model\WeightGoalModel.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\main\java\com\runapp\profileservice\model\GoalModel.java

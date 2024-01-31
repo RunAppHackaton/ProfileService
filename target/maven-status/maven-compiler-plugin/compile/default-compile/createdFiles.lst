@@ -1,5 +1,6 @@
 com\runapp\profileservice\repository\WeightGoalRepository.class
 com\runapp\profileservice\config\SecurityConfig.class
+com\runapp\profileservice\exceptions\GlobalExceptionHandler.class
 com\runapp\profileservice\feignClient\StorageServiceClient.class
 com\runapp\profileservice\model\DistanceGoalModel.class
 com\runapp\profileservice\repository\DistanceGoalRepository.class
@@ -8,6 +9,7 @@ com\runapp\profileservice\repository\UserRepository.class
 com\runapp\profileservice\model\GoalModel.class
 com\runapp\profileservice\repository\GoalRepository.class
 com\runapp\profileservice\service\UserService.class
+com\runapp\profileservice\exceptions\EntityNotFoundException.class
 com\runapp\profileservice\dto\request\CreateDurationGoalRequest.class
 com\runapp\profileservice\dto\request\CreateWeightGoalRequest.class
 com\runapp\profileservice\controller\UserController.class

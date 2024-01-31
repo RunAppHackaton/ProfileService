@@ -4,6 +4,7 @@ import com.runapp.profileservice.dto.request.*;
 import com.runapp.profileservice.dto.response.DeleteResponse;
 import com.runapp.profileservice.dto.response.UserResponse;
 import com.runapp.profileservice.dto.userDtoMapper.UserDtoMapper;
+import com.runapp.profileservice.exceptions.EntityNotFoundException;
 import com.runapp.profileservice.feignClient.StorageServiceClient;
 import com.runapp.profileservice.model.DistanceGoalModel;
 import com.runapp.profileservice.model.DurationGoalModel;
@@ -41,10 +42,8 @@ public class UserController {
 
     private final UserService userService;
     private final UserDtoMapper userDtoMapper;
-
     @Value("${storage-directory}")
     private String storageDirectory;
-
     private final StorageServiceClient storageServiceClient;
 
     @Autowired
@@ -59,18 +58,8 @@ public class UserController {
     @ApiResponse(responseCode = "201", description = "User created", content = @Content(schema = @Schema(implementation = UserResponse.class)))
     @ApiResponse(responseCode = "400", description = "Invalid input")
     public ResponseEntity<Object> createUser(
-            @RequestBody @Valid UserRequest userRequest,
-            BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            Map<String, String> validationErrors = new HashMap<>();
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
-            }
-            return new ResponseEntity<>(validationErrors, HttpStatus.BAD_REQUEST);
-        }
-        System.out.println(userRequest);
+            @RequestBody @Valid UserRequest userRequest) {
         UserModel createdUser = userService.createUser(userDtoMapper.toModel(userRequest));
-        System.out.println(createdUser);
         UserResponse userResponse = userDtoMapper.toResponse(createdUser);
         return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
@@ -84,7 +73,7 @@ public class UserController {
             @PathVariable int userId) {
         Optional<UserModel> user = userService.getUserById(userId);
         return user.map(value -> new ResponseEntity<>(userDtoMapper.toResponse(value), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @GetMapping
@@ -106,23 +95,12 @@ public class UserController {
     public ResponseEntity<Object> updateUser(
             @Parameter(description = "User ID", required = true)
             @PathVariable int userId,
-            @Valid @RequestBody UserRequest userRequest,
-            BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            Map<String, String> validationErrors = new HashMap<>();
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
-            }
-            return new ResponseEntity<>(validationErrors, HttpStatus.BAD_REQUEST);
-        }
-
+            @Valid @RequestBody UserRequest userRequest) {
         UserModel updated = userService.updateUser(userId, userDtoMapper.toModel(userRequest));
-        if (updated != null) {
-            UserResponse userResponse = userDtoMapper.toResponse(updated);
-            return new ResponseEntity<>(userResponse, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        if (updated == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        UserResponse userResponse = userDtoMapper.toResponse(updated);
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("/{userId}")
@@ -132,10 +110,7 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(
             @Parameter(description = "User ID", required = true)
             @PathVariable int userId) {
-        Optional<UserModel> userModel = userService.getUserById(userId);
-        if (userModel.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        userService.getUserById(userId).orElseThrow(EntityNotFoundException::new);
         userService.deleteUser(userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -148,16 +123,12 @@ public class UserController {
     public ResponseEntity<Object> uploadImage(
             @Parameter(description = "Image file to upload", required = true) @RequestParam("file") MultipartFile file,
             @Parameter(description = "ID of the story to associate with the uploaded image", required = true) @RequestParam("user_id") int userId) {
-        Optional<UserModel> optionalUserModel = userService.getUserById(userId);
-        if (optionalUserModel.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with id " + userId + " not found");
-        } else {
-            UserModel userModel = optionalUserModel.orElse(null);
-            userModel.setUserImageUrl(storageServiceClient.uploadFile(file, storageDirectory).getFile_uri());
-            userService.updateUser(userId, userModel);
-            return ResponseEntity.ok().body(userDtoMapper.toResponse(userModel));
-        }
+        UserModel userModel = userService.getUserById(userId).orElseThrow(()->new EntityNotFoundException("User with id " + userId + " not found"));
+        userModel.setUserImageUrl(storageServiceClient.uploadFile(file, storageDirectory).getFile_uri());
+        userService.updateUser(userId, userModel);
+        return ResponseEntity.ok().body(userDtoMapper.toResponse(userModel));
     }
+
 
     @DeleteMapping("/delete-image")
     @Operation(summary = "Delete an image associated with a story", description = "Delete the image associated with a story by providing the image URI and story details.")
@@ -165,21 +136,11 @@ public class UserController {
     @ApiResponse(responseCode = "404", description = "Story not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
     public ResponseEntity<Object> deleteImage(@Parameter(description = "Request body containing story ID and image URI", required = true) @RequestBody UserDeleteRequest userDeleteRequest) {
-        Optional<UserModel> optionalUserModel = userService.getUserById(userDeleteRequest.getUser_id());
-        if (optionalUserModel.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with id " + userDeleteRequest.getUser_id() + " not found");
-        }
-        UserModel userModel = optionalUserModel.orElse(null);
+        UserModel userModel = userService.getUserById(userDeleteRequest.getUser_id()).orElseThrow(()->new EntityNotFoundException("User with id " + userDeleteRequest.getUser_id() + " not found"));
         userModel.setUserImageUrl("DEFAULT");
         userService.updateUser(userDeleteRequest.getUser_id(), userModel);
-        try {
-            storageServiceClient.deleteFile(new DeleteStorageRequest(userDeleteRequest.getFile_uri(), storageDirectory));
-            // Обработка успешного удаления
-            return ResponseEntity.ok().build();
-        } catch (FeignException.InternalServerError e) {
-            // Обработка исключения, которое может возникнуть при вызове deleteFile
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new DeleteResponse("the image does not exist or the data was transferred incorrectly"));
-        }
+        storageServiceClient.deleteFile(new DeleteStorageRequest(userDeleteRequest.getFile_uri(), storageDirectory));
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/distance-goals")
@@ -189,11 +150,9 @@ public class UserController {
     public ResponseEntity<DistanceGoalModel> addDistanceGoalToUser(
             @RequestBody @Valid CreateDistanceGoalRequest createDistanceGoalRequest) {
         DistanceGoalModel distanceGoal = userService.addDistanceGoalToUser(createDistanceGoalRequest);
-        if (distanceGoal != null) {
-            return new ResponseEntity<>(distanceGoal, HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        if (distanceGoal == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(distanceGoal, HttpStatus.CREATED);
     }
 
     @PostMapping("/duration-goals")
@@ -203,11 +162,9 @@ public class UserController {
     public ResponseEntity<DurationGoalModel> addDurationGoalToUser(
             @RequestBody @Valid CreateDurationGoalRequest createDurationGoalRequest) {
         DurationGoalModel durationGoal = userService.addDurationGoalToUser(createDurationGoalRequest);
-        if (durationGoal != null) {
-            return new ResponseEntity<>(durationGoal, HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        if (durationGoal == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(durationGoal, HttpStatus.CREATED);
     }
 
     @PostMapping("/weight-goals")
@@ -217,12 +174,9 @@ public class UserController {
     public ResponseEntity<WeightGoalModel> addWeightGoalToUser(
             @RequestBody @Valid CreateWeightGoalRequest createWeightGoalRequest) {
         WeightGoalModel weightGoal = userService.addWeightGoalToUser(createWeightGoalRequest);
-        if (weightGoal != null) {
-            return new ResponseEntity<>(weightGoal, HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+        if (weightGoal == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
+        return new ResponseEntity<>(weightGoal, HttpStatus.CREATED);
+    }
 }
 
