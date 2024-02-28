@@ -1,3 +1,5 @@
+D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com\runapp\profileservice\staticObject\StaticDurationGoal.java
+D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com\runapp\profileservice\staticObject\StaticWeightGoal.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com\runapp\profileservice\dto\request\CreateDurationGoalRequestDiffblueTest.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com\runapp\profileservice\dto\response\StorageServiceResponseDiffblueTest.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com\runapp\profileservice\dto\userDtoMapper\UserDtoMapperDiffblueTest.java
@@ -9,11 +11,14 @@ D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com\runapp\profileservice\model\UserModelDiffblueTest.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com\runapp\profileservice\dto\response\UserResponseDiffblueTest.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com\runapp\profileservice\dto\request\UserDeleteRequestDiffblueTest.java
+D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com\runapp\profileservice\staticObject\StaticDistanceGoal.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com\runapp\profileservice\controller\UserControllerDiffblueTest.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com\runapp\profileservice\model\DistanceGoalModelDiffblueTest.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com\runapp\profileservice\controller\TestH2Repository.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com\runapp\profileservice\service\UserServiceDiffblueTest.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com\runapp\profileservice\dto\request\CreateDistanceGoalRequestDiffblueTest.java
+D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com\runapp\profileservice\staticObject\StaticUser.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com\runapp\profileservice\model\WeightGoalModelDiffblueTest.java
+D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com\runapp\profileservice\staticObject\StaticGoal.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com\runapp\profileservice\dto\request\UserRequestDiffblueTest.java
 D:\My Directory\Projects\JavaProjects\Practices\ProfileService\src\test\java\com\runapp\profileservice\model\GoalModelDiffblueTest.java

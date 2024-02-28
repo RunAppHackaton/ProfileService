@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.runapp.profileservice.staticObject.StaticUser;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,17 +57,9 @@ class UserResponseDiffblueTest {
      */
     @Test
     void testConstructor() {
-        UserResponse actualUserResponse = new UserResponse();
+        UserResponse actualUserResponse = StaticUser.actualUserResponse();
         LocalDateTime createDate = LocalDate.of(1970, 1, 1).atStartOfDay();
         actualUserResponse.setCreateDate(createDate);
-        actualUserResponse.setEmail("jane.doe@example.org");
-        actualUserResponse.setFirstName("Jane");
-        actualUserResponse.setId(1);
-        actualUserResponse.setLastName("Doe");
-        actualUserResponse.setRole(null);
-        actualUserResponse.setUserImageUrl("https://example.org/example");
-        actualUserResponse.setUsername("janedoe");
-        actualUserResponse.setPassword("password");
         String actualToStringResult = actualUserResponse.toString();
         LocalDateTime actualCreateDate = actualUserResponse.getCreateDate();
         String actualEmail = actualUserResponse.getEmail();
@@ -115,18 +108,9 @@ class UserResponseDiffblueTest {
      */
     @Test
     void testConstructor2() {
-        UserResponse actualUserResponse = new UserResponse(1, "janedoe","password", "Jane", "Doe", null, "jane.doe@example.org",
-                LocalDate.of(1970, 1, 1).atStartOfDay(), "https://example.org/example");
+        UserResponse actualUserResponse = StaticUser.actualUserResponse();
         LocalDateTime createDate = LocalDate.of(1970, 1, 1).atStartOfDay();
         actualUserResponse.setCreateDate(createDate);
-        actualUserResponse.setEmail("jane.doe@example.org");
-        actualUserResponse.setFirstName("Jane");
-        actualUserResponse.setId(1);
-        actualUserResponse.setLastName("Doe");
-        actualUserResponse.setRole(null);
-        actualUserResponse.setUserImageUrl("https://example.org/example");
-        actualUserResponse.setUsername("janedoe");
-        actualUserResponse.setPassword("password");
         String actualToStringResult = actualUserResponse.toString();
         LocalDateTime actualCreateDate = actualUserResponse.getCreateDate();
         String actualEmail = actualUserResponse.getEmail();
@@ -195,8 +179,7 @@ class UserResponseDiffblueTest {
      */
     @Test
     void testEquals4() {
-        UserResponse userResponse = new UserResponse(1, "janedoe","password", "Jane", "Doe", null, "jane.doe@example.org",
-                LocalDate.of(1970, 1, 1).atStartOfDay(), "https://example.org/example");
+        UserResponse userResponse = StaticUser.actualUserResponse();
         assertNotEquals(userResponse, new UserResponse());
     }
 
@@ -270,10 +253,8 @@ class UserResponseDiffblueTest {
      */
     @Test
     void testEquals11() {
-        UserResponse userResponse = new UserResponse(1, "janedoe","password", "Jane", "Doe", null, "jane.doe@example.org",
-                LocalDate.of(1970, 1, 1).atStartOfDay(), "https://example.org/example");
-        UserResponse userResponse2 = new UserResponse(1, "janedoe","password", "Jane", "Doe", null, "jane.doe@example.org",
-                LocalDate.of(1970, 1, 1).atStartOfDay(), "https://example.org/example");
+        UserResponse userResponse = StaticUser.actualUserResponse();
+        UserResponse userResponse2 = StaticUser.actualUserResponse();
 
         assertEquals(userResponse, userResponse2);
         int expectedHashCodeResult = userResponse.hashCode();

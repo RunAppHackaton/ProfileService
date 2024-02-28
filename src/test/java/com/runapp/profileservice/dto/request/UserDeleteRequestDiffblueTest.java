@@ -26,18 +26,6 @@ class UserDeleteRequestDiffblueTest {
         assertTrue(userDeleteRequest.canEqual(userDeleteRequest));
     }
 
-    /**
-     * Methods under test:
-     *
-     * <ul>
-     *   <li>{@link UserDeleteRequest#UserDeleteRequest()}
-     *   <li>{@link UserDeleteRequest#setFile_uri(String)}
-     *   <li>{@link UserDeleteRequest#setUser_id(int)}
-     *   <li>{@link UserDeleteRequest#toString()}
-     *   <li>{@link UserDeleteRequest#getFile_uri()}
-     *   <li>{@link UserDeleteRequest#getUser_id()}
-     * </ul>
-     */
     @Test
     void testConstructor() {
         UserDeleteRequest actualUserDeleteRequest = new UserDeleteRequest();
@@ -50,18 +38,6 @@ class UserDeleteRequestDiffblueTest {
         assertEquals(1, actualUserDeleteRequest.getUser_id());
     }
 
-    /**
-     * Methods under test:
-     *
-     * <ul>
-     *   <li>{@link UserDeleteRequest#UserDeleteRequest(String, int)}
-     *   <li>{@link UserDeleteRequest#setFile_uri(String)}
-     *   <li>{@link UserDeleteRequest#setUser_id(int)}
-     *   <li>{@link UserDeleteRequest#toString()}
-     *   <li>{@link UserDeleteRequest#getFile_uri()}
-     *   <li>{@link UserDeleteRequest#getUser_id()}
-     * </ul>
-     */
     @Test
     void testConstructor2() {
         UserDeleteRequest actualUserDeleteRequest = new UserDeleteRequest("File uri", 1);

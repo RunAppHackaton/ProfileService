@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.runapp.profileservice.staticObject.StaticUser;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,37 +31,11 @@ class UserRequestDiffblueTest {
         assertTrue(userRequest.canEqual(userRequest));
     }
 
-    /**
-     * Methods under test:
-     *
-     * <ul>
-     *   <li>{@link UserRequest#UserRequest()}
-     *   <li>{@link UserRequest#setCreateDate(LocalDateTime)}
-     *   <li>{@link UserRequest#setEmail(String)}
-     *   <li>{@link UserRequest#setFirstName(String)}
-     *   <li>{@link UserRequest#setLastName(String)}
-     *   <li>{@link UserRequest#setUserImageUrl(String)}
-     *   <li>{@link UserRequest#setUsername(String)}
-     *   <li>{@link UserRequest#toString()}
-     *   <li>{@link UserRequest#getCreateDate()}
-     *   <li>{@link UserRequest#getEmail()}
-     *   <li>{@link UserRequest#getFirstName()}
-     *   <li>{@link UserRequest#getLastName()}
-     *   <li>{@link UserRequest#getUserImageUrl()}
-     *   <li>{@link UserRequest#getUsername()}
-     * </ul>
-     */
     @Test
     void testConstructor() {
-        UserRequest actualUserRequest = new UserRequest();
+        UserRequest actualUserRequest = StaticUser.actualUserRequest();
         LocalDateTime createDate = LocalDate.of(1970, 1, 1).atStartOfDay();
         actualUserRequest.setCreateDate(createDate);
-        actualUserRequest.setEmail("jane.doe@example.org");
-        actualUserRequest.setFirstName("Jane");
-        actualUserRequest.setLastName("Doe");
-        actualUserRequest.setUserImageUrl("https://example.org/example");
-        actualUserRequest.setUsername("janedoe");
-        actualUserRequest.setPassword("password");
         String actualToStringResult = actualUserRequest.toString();
         LocalDateTime actualCreateDate = actualUserRequest.getCreateDate();
         String actualEmail = actualUserRequest.getEmail();
@@ -80,16 +55,9 @@ class UserRequestDiffblueTest {
 
     @Test
     void testConstructor2() {
-        UserRequest actualUserRequest = new UserRequest("janedoe", "password", "Jane", "Doe", "jane.doe@example.org",
-                LocalDate.of(1970, 1, 1).atStartOfDay(), "https://example.org/example");
+        UserRequest actualUserRequest = StaticUser.actualUserRequest();
         LocalDateTime createDate = LocalDate.of(1970, 1, 1).atStartOfDay();
         actualUserRequest.setCreateDate(createDate);
-        actualUserRequest.setEmail("jane.doe@example.org");
-        actualUserRequest.setFirstName("Jane");
-        actualUserRequest.setLastName("Doe");
-        actualUserRequest.setUserImageUrl("https://example.org/example");
-        actualUserRequest.setUsername("janedoe");
-        actualUserRequest.setPassword("password");
         String actualToStringResult = actualUserRequest.toString();
         LocalDateTime actualCreateDate = actualUserRequest.getCreateDate();
         String actualEmail = actualUserRequest.getEmail();
@@ -153,8 +121,7 @@ class UserRequestDiffblueTest {
      */
     @Test
     void testEquals4() {
-        UserRequest userRequest = new UserRequest("janedoe","password", "Jane", "Doe", "jane.doe@example.org",
-                LocalDate.of(1970, 1, 1).atStartOfDay(), "https://example.org/example");
+        UserRequest userRequest = StaticUser.userRequest1();
         assertNotEquals(userRequest, new UserRequest());
     }
 
@@ -164,8 +131,7 @@ class UserRequestDiffblueTest {
     @Test
     void testEquals5() {
         UserRequest userRequest = new UserRequest();
-        assertNotEquals(userRequest, new UserRequest("janedoe","password", "Jane", "Doe", "jane.doe@example.org",
-                LocalDate.of(1970, 1, 1).atStartOfDay(), "https://example.org/example"));
+        assertNotEquals(userRequest, StaticUser.invalidUserRequest1());
     }
 
     /**
@@ -228,10 +194,8 @@ class UserRequestDiffblueTest {
      */
     @Test
     void testEquals11() {
-        UserRequest userRequest = new UserRequest("janedoe", "password","Jane", "Doe", "jane.doe@example.org",
-                LocalDate.of(1970, 1, 1).atStartOfDay(), "https://example.org/example");
-        UserRequest userRequest2 = new UserRequest("janedoe", "password","Jane", "Doe", "jane.doe@example.org",
-                LocalDate.of(1970, 1, 1).atStartOfDay(), "https://example.org/example");
+        UserRequest userRequest = StaticUser.userRequest1();
+        UserRequest userRequest2 = StaticUser.userRequest1();
 
         assertEquals(userRequest, userRequest2);
         int expectedHashCodeResult = userRequest.hashCode();

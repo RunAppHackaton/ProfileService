@@ -13,6 +13,7 @@ import com.runapp.profileservice.dto.request.UserRequest;
 import com.runapp.profileservice.dto.response.UserResponse;
 import com.runapp.profileservice.model.GoalModel;
 import com.runapp.profileservice.model.UserModel;
+import com.runapp.profileservice.staticObject.StaticUser;
 import com.runapp.profileservice.utill.RoleEnum;
 
 import java.time.LocalDate;
@@ -77,16 +78,7 @@ class UserDtoMapperDiffblueTest {
      */
     @Test
     void testToResponse() {
-        UserModel userModel = new UserModel();
-        userModel.setCreateDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        userModel.setEmail("jane.doe@example.org");
-        userModel.setFirstName("Jane");
-        userModel.setGoalModelList(new ArrayList<>());
-        userModel.setId(1);
-        userModel.setLastName("Doe");
-        userModel.setRole(RoleEnum.GUEST);
-        userModel.setUserImageUrl("https://example.org/example");
-        userModel.setUsername("janedoe");
+        UserModel userModel = StaticUser.userModel1();
         UserResponse actualToResponseResult = userDtoMapper.toResponse(userModel);
         assertTrue(actualToResponseResult.getRole() instanceof RoleEnum);
         assertEquals("00:00", actualToResponseResult.getCreateDate().toLocalTime().toString());

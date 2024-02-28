@@ -26,18 +26,6 @@ class DeleteStorageRequestDiffblueTest {
         assertTrue(deleteStorageRequest.canEqual(deleteStorageRequest));
     }
 
-    /**
-     * Methods under test:
-     *
-     * <ul>
-     *   <li>{@link DeleteStorageRequest#DeleteStorageRequest()}
-     *   <li>{@link DeleteStorageRequest#setDirectory(String)}
-     *   <li>{@link DeleteStorageRequest#setFile_uri(String)}
-     *   <li>{@link DeleteStorageRequest#toString()}
-     *   <li>{@link DeleteStorageRequest#getDirectory()}
-     *   <li>{@link DeleteStorageRequest#getFile_uri()}
-     * </ul>
-     */
     @Test
     void testConstructor() {
         DeleteStorageRequest actualDeleteStorageRequest = new DeleteStorageRequest();
@@ -50,18 +38,6 @@ class DeleteStorageRequestDiffblueTest {
         assertEquals("File uri", actualDeleteStorageRequest.getFile_uri());
     }
 
-    /**
-     * Methods under test:
-     *
-     * <ul>
-     *   <li>{@link DeleteStorageRequest#DeleteStorageRequest(String, String)}
-     *   <li>{@link DeleteStorageRequest#setDirectory(String)}
-     *   <li>{@link DeleteStorageRequest#setFile_uri(String)}
-     *   <li>{@link DeleteStorageRequest#toString()}
-     *   <li>{@link DeleteStorageRequest#getDirectory()}
-     *   <li>{@link DeleteStorageRequest#getFile_uri()}
-     * </ul>
-     */
     @Test
     void testConstructor2() {
         DeleteStorageRequest actualDeleteStorageRequest = new DeleteStorageRequest("File uri", "/directory");

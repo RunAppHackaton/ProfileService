@@ -67,23 +67,6 @@ class CreateDistanceGoalRequestDiffblueTest {
         assertSame(dateStop, actualDateStop);
     }
 
-    /**
-     * Methods under test:
-     *
-     * <ul>
-     *   <li>
-     * {@link CreateDistanceGoalRequest#CreateDistanceGoalRequest(Integer, LocalDateTime, LocalDateTime, Long)}
-     *   <li>{@link CreateDistanceGoalRequest#setDateStart(LocalDateTime)}
-     *   <li>{@link CreateDistanceGoalRequest#setDateStop(LocalDateTime)}
-     *   <li>{@link CreateDistanceGoalRequest#setDistance_km(Long)}
-     *   <li>{@link CreateDistanceGoalRequest#setUser_id(Integer)}
-     *   <li>{@link CreateDistanceGoalRequest#toString()}
-     *   <li>{@link CreateDistanceGoalRequest#getDateStart()}
-     *   <li>{@link CreateDistanceGoalRequest#getDateStop()}
-     *   <li>{@link CreateDistanceGoalRequest#getDistance_km()}
-     *   <li>{@link CreateDistanceGoalRequest#getUser_id()}
-     * </ul>
-     */
     @Test
     void testConstructor2() {
         LocalDateTime dateStart = LocalDate.of(1970, 1, 1).atStartOfDay();

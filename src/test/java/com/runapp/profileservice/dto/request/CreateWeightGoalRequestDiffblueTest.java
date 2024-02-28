@@ -29,25 +29,6 @@ class CreateWeightGoalRequestDiffblueTest {
         assertFalse(createWeightGoalRequest.canEqual("Other"));
         assertTrue(createWeightGoalRequest.canEqual(createWeightGoalRequest));
     }
-
-    /**
-     * Methods under test:
-     *
-     * <ul>
-     *   <li>{@link CreateWeightGoalRequest#CreateWeightGoalRequest()}
-     *   <li>{@link CreateWeightGoalRequest#setCurrentWeight(Integer)}
-     *   <li>{@link CreateWeightGoalRequest#setDateStart(LocalDateTime)}
-     *   <li>{@link CreateWeightGoalRequest#setDateStop(LocalDateTime)}
-     *   <li>{@link CreateWeightGoalRequest#setTargetWeight(Integer)}
-     *   <li>{@link CreateWeightGoalRequest#setUser_id(Integer)}
-     *   <li>{@link CreateWeightGoalRequest#toString()}
-     *   <li>{@link CreateWeightGoalRequest#getCurrentWeight()}
-     *   <li>{@link CreateWeightGoalRequest#getDateStart()}
-     *   <li>{@link CreateWeightGoalRequest#getDateStop()}
-     *   <li>{@link CreateWeightGoalRequest#getTargetWeight()}
-     *   <li>{@link CreateWeightGoalRequest#getUser_id()}
-     * </ul>
-     */
     @Test
     void testConstructor() {
         CreateWeightGoalRequest actualCreateWeightGoalRequest = new CreateWeightGoalRequest();
@@ -74,25 +55,6 @@ class CreateWeightGoalRequestDiffblueTest {
         assertSame(dateStop, actualDateStop);
     }
 
-    /**
-     * Methods under test:
-     *
-     * <ul>
-     *   <li>
-     * {@link CreateWeightGoalRequest#CreateWeightGoalRequest(Integer, LocalDateTime, LocalDateTime, Integer, Integer)}
-     *   <li>{@link CreateWeightGoalRequest#setCurrentWeight(Integer)}
-     *   <li>{@link CreateWeightGoalRequest#setDateStart(LocalDateTime)}
-     *   <li>{@link CreateWeightGoalRequest#setDateStop(LocalDateTime)}
-     *   <li>{@link CreateWeightGoalRequest#setTargetWeight(Integer)}
-     *   <li>{@link CreateWeightGoalRequest#setUser_id(Integer)}
-     *   <li>{@link CreateWeightGoalRequest#toString()}
-     *   <li>{@link CreateWeightGoalRequest#getCurrentWeight()}
-     *   <li>{@link CreateWeightGoalRequest#getDateStart()}
-     *   <li>{@link CreateWeightGoalRequest#getDateStop()}
-     *   <li>{@link CreateWeightGoalRequest#getTargetWeight()}
-     *   <li>{@link CreateWeightGoalRequest#getUser_id()}
-     * </ul>
-     */
     @Test
     void testConstructor2() {
         LocalDateTime dateStart = LocalDate.of(1970, 1, 1).atStartOfDay();
