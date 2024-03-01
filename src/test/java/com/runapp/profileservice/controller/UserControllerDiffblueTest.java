@@ -137,6 +137,7 @@ class UserControllerDiffblueTest {
      */
     @Test
     void testCreateUser3() {
+
         UserModel userModel = StaticUser.userModel1();
         UserService userService = mock(UserService.class);
         when(userService.createUser(Mockito.<UserModel>any())).thenReturn(userModel);
